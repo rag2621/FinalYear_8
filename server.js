@@ -23,19 +23,32 @@ server.get('/login', (req, res) => {
 server.get('/listing', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'listing.html'));
 });
+server.get('/herbs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'herbs.html'));
+});
+server.get('/spices', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'spices.html'));
+});
 server.post('/signup', async (req, res) => {
-    try {
-        const user = req.body;
-        console.log("Received user:", user);
+  try {
+    const user = req.body;
+    console.log("Received user:", user);
 
-        const newUser = await User.create(user);
-        console.log("User created:", newUser);
-
-        res.status(201).send({ message: "Signup successful", user: newUser });
-    } catch (err) {
-        console.error("Error creating user:", err);
-        res.status(500).send({ message: "Signup failed", error: err.message });
+    // Check if user with same email already exists
+    const existingUser = await User.findOne({ email: user.email });
+    if (existingUser) {
+      return res.status(400).send({ message: "Email already registered" });
     }
+
+    // Create new user if not existing
+    const newUser = await User.create(user);
+    console.log("User created:", newUser);
+
+    res.status(201).send({ message: "Signup successful", user: newUser });
+  } catch (err) {
+    console.error("Error creating user:", err);
+    res.status(500).send({ message: "Signup failed", error: err.message });
+  }
 });
 
 server.post('/verify', async (req, res) => {       
@@ -71,6 +84,22 @@ server.post('/list', async (req, res) => {
   } catch (err) {
     console.error("Error saving listing:", err);
     res.status(500).send({ message: "Failed to save listing", error: err.message });
+  }
+});
+
+
+server.get('/listfetch', async (req, res) => {
+  try {
+    const email = req.query.email;
+    if (!email) {
+      return res.status(400).send({ message: "Email is required" });
+    }
+
+    const listings = await Property.find({ email: email });
+    res.status(200).send({ message: "Listings fetched successfully", listings });
+  } catch (err) {
+    console.error("Error fetching listings:", err);
+    res.status(500).send({ message: "Failed to fetch listings", error: err.message });
   }
 });
 

@@ -21,7 +21,14 @@
           <span id="success-message" style="color: green; font-size: 12px; display: none;"></span>
           <input class="login-button" type="submit" value="Register" id="submitBtn">
         </form>
+
         <span class="agreement"><a href="#">Learn user licence agreement</a></span>
+
+        <!-- 👇 Added section for login -->
+        <div class="login-redirect" style="margin-top: 15px; font-size: 14px;">
+            Already have an account? 
+            <a href="/login" style="color: blue; text-decoration: underline;">Login here</a>
+        </div>
     </div>
 
     <script>
@@ -50,8 +57,6 @@
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            console.log("Form submission triggered");
-
             generalError.style.display = 'none';
             successMessage.style.display = 'none';
 
@@ -107,11 +112,10 @@
     
                     if (data.token) localStorage.setItem('authToken', data.token);
                     if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-                     setTimeout(() => {
-        window.location.href = '/login';
-    }, 1000);
 
-    form.reset();
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 1000);
 
                     form.reset();
                 } else {
