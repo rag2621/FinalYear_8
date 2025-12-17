@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Team & Vision | Blockchain Property Solutions</title>
+  <style>
+    /* ===== Base Styles ===== */
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f7fc;
+      color: #333;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ===== Header with Background Image ===== */
+    header {
+      background: 
+        linear-gradient(135deg, rgba(0,74,173,0.8), rgba(0,46,115,0.85)),
+        url("https://res.cloudinary.com/dys5oojz9/image/upload/v1762854897/header_wtes7z.jpg");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: white;
+      text-align: center;
+      padding: 100px 20px 120px;
+      position: relative;
+      animation: fadeInHeader 1.5s ease forwards;
+    }
+
+    @keyframes fadeInHeader {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header h1 {
+      font-size: 2.8em;
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    header p {
+      font-size: 1.15em;
+      margin-top: 15px;
+      opacity: 0.95;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      width: 120px;
+      height: 4px;
+      background-color: #fff;
+      border-radius: 2px;
+      transform: translateX(-50%);
+      box-shadow: 0 0 12px #ffffffb0;
+    }
+
+    /* ===== Team Section ===== */
+    .team {
+      max-width: 1100px;
+      margin: 60px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .team h2 {
+      color: #004aad;
+      font-size: 2.2em;
+      margin-bottom: 10px;
+      font-family: "Poppins", sans-serif;
+      position: relative;
+      display: inline-block;
+    }
+
+    .team h2::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 3px;
+      background: #004aad;
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
+
+    .team p.intro {
+      font-size: 1.05em;
+      color: #555;
+      max-width: 700px;
+      margin: 10px auto 40px;
+    }
+
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 35px;
+    }
+
+    .member {
+      background: linear-gradient(145deg, #ffffff, #e8f0ff);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px 20px;
+      width: 280px;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .member:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 6px 18px rgba(0, 74, 173, 0.3);
+    }
+
+    .member::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 74, 173, 0.08);
+      transition: all 0.5s ease;
+    }
+
+    .member:hover::before {
+      left: 0;
+    }
+
+    .member img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #004aad;
+      margin-bottom: 15px;
+      box-shadow: 0 0 10px rgba(0, 74, 173, 0.3);
+    }
+
+    .member h3 {
+      color: #004aad;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .member h4 {
+      color: #003b8a;
+      font-size: 0.95em;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .member p {
+      font-size: 0.93em;
+      color: #555;
+    }
+
+    /* ===== Vision Section ===== */
+    .vision {
+      background: linear-gradient(180deg, #e8f0ff, #f4f7fc);
+      padding: 60px 20px;
+      text-align: center;
+      border-top: 4px solid #004aad;
+      border-bottom: 4px solid #004aad;
+    }
+
+    .vision h2 {
+      color: #004aad;
+      font-family: "Poppins", sans-serif;
+      font-size: 2.2em;
+      margin-bottom: 20px;
+    }
+
+    .vision p {
+      max-width: 900px;
+      margin: 0 auto 15px auto;
+      font-size: 1.05em;
+      color: #444;
+    }
+
+    .highlight {
+      color: #003b8a;
+      font-weight: bold;
+    }
+
+    /* ===== Footer ===== */
+    footer {
+      background-color: #004aad;
+      color: white;
+      text-align: center;
+      padding: 18px 10px;
+      font-size: 0.95em;
+      position: relative;
+    }
+
+    footer::before {
+      content: "🏙";
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.7;
+    }
+
+    /* ===== Responsive Design ===== */
+    @media (max-width: 768px) {
+      header {
+        background-attachment: scroll;
+      }
+      header h1 {
+        font-size: 2em;
+      }
+      .team-members {
+        flex-direction: column;
+        align-items: center;
+      }
+      .member {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Meet the Visionaries</h1>
+    <p>Transforming Real Estate Through Blockchain Innovation</p>
+  </header>
+
+  <section class="team">
+    <h2>Our Leadership</h2>
+    <p class="intro">
+      We are three passionate 21-year-old innovators building the future of
+      property transactions through blockchain technology. Meet the minds
+      behind this mission.
+    </p>
+
+    <div class="team-members">
+      <div class="member">
+        <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1762855109/tere_bina_xdvvjy_sqsn6x.jpg" alt="Raghav Sharma" />
+        <h3>Raghav Sharma</h3>
+        <h4>Chief Executive Officer (CEO)</h4>
+        <p>
+          Raghav Sharma leads the firm with vision and ambition. As CEO, he’s
+          the driving force behind our strategic growth and partnerships. His
+          dream is to make blockchain the backbone of secure real estate
+          ownership in India.
+        </p>
+      </div>
+
+      <div class="member">
+        <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1762855212/dil_jhoom_album_cover_qhke2m_dnxwmg.jpg" alt="Raghav Dhiman" />
+        <h3>Raghav Dhiman</h3>
+        <h4>Chief Financial Officer (CFO)</h4>
+        <p>
+          Raghav Dhiman ensures financial transparency and scalability. He
+          manages every project with precision, aiming to make blockchain
+          property systems financially accessible and practical for all.
+        </p>
+      </div>
+
+      <div class="member">
+        <img  alt="Sujal Chandel" />
+        <h3>Sujal Chandel</h3>
+        <h4>Chief Operations Commando</h4>
+        <p>
+          Sujal brings discipline, focus, and a results-driven mindset. As the
+          “commando” of our operations, he ensures that every aspect of our
+          blockchain infrastructure runs smoothly and securely.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="vision">
+    <h2>Our Vision</h2>
+    <p>
+      Our mission is to <span class="highlight">simplify property buying and
+      selling</span> using blockchain technology. We envision a world where
+      real estate transactions are transparent, fast, and fraud-proof.
+    </p>
+    <p>
+      By leveraging decentralized ledgers, we aim to eliminate fake ownership,
+      streamline documentation, and ensure authenticity in every transaction.
+    </p>
+    <p>
+      Our long-term vision is to <span class="highlight">collaborate with the
+      Government of India</span> to create a nationwide blockchain property
+      registry, securing the foundation of India’s real estate market for
+      generations to come.
+    </p>
+  </section>
+
+  <footer>
+    &copy; 2025 Blockchain Property Solutions | Founded by Raghav Sharma,
+    Raghav Dhiman &amp; Sujal Chandel | Innovating for a Transparent Future.
+  </footer>
+</body>
+</html>

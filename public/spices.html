@@ -3,65 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Indian Spices</title>
-    <link rel="stylesheet" href="/spices.css">
+    <title>Maps of Major Indian Cities</title>
+    <style>
+        /* ===== General Styles ===== */
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* ===== Header ===== */
+        header {
+            background: linear-gradient(135deg, #7f8792, #092138);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 2.4em;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 100px;
+            height: 4px;
+            background-color: #fff;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        /* ===== Navigation Bar ===== */
+        nav {
+            background-color: #003b8a;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 12px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #005ce6;
+        }
+
+        /* ===== Main Section ===== */
+        main {
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        section {
+            background-color: white;
+            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #004aad;
+        }
+
+        h2 {
+            border-bottom: 2px solid #004aad;
+            padding-bottom: 5px;
+        }
+
+        /* ===== City Info Boxes ===== */
+        .city-facts {
+            background-color: #e8f0ff;
+            padding: 12px 15px;
+            border-left: 4px solid #004aad;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .map-container {
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        footer {
+            background-color: #004aad;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 0.9em;
+        }
+
+        /* ===== Responsive Design ===== */
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .map-container iframe {
+                height: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
+   <header>
+  <h1>Maps of Major Indian Cities</h1>
+  <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1762856549/HEADER2_oqbpht.jpg" alt="">
+</header>
 
-    <h1>Popular Spices in India</h1>
-    
-    <ol>
-        <li>
-            <img src="./piictures/turmeric.jpeg" alt="Turmeric" class="spice-image">
-            <span class="spice-name">Turmeric</span>
-            <p class="spice-description">A vibrant yellow spice widely used in Indian cuisine. Known for its earthy flavor and anti-inflammatory properties, it’s often used in curries and traditional remedies.</p>
-        </li>
-        <li>
-            <img src="./piictures/cumin.jpeg.jpeg" alt="Cumin" class="spice-image">
-            <span class="spice-name">Cumin</span>
-            <p class="spice-description">Cumin seeds are known for their distinctive aroma and are used to add a warm, earthy flavor to Indian dishes. They are often toasted to release a stronger flavor.</p>
-        </li>
-        <li>
-            <img src="./piictures/coriander.jpeg.jpg" alt="Coriander" class="spice-image">
-            <span class="spice-name">Coriander</span>
-            <p class="spice-description">Both the seeds and leaves of coriander are used in Indian cooking. Coriander seeds add a warm, nutty flavor, while the leaves add a fresh, citrusy touch to dishes.</p>
-        </li>
-        <li>
-            <img src="./piictures/Cardamom.jpeg.webp" alt="Cardamom" class="spice-image">
-            <span class="spice-name">Cardamom</span>
-            <p class="spice-description">Known as the "Queen of Spices," cardamom has a sweet and aromatic flavor. It’s used in both sweet and savory dishes, as well as in chai tea.</p>
-        </li>
-        <li>
-            <img src="./piictures/cloves.jpeg" alt="Cloves" class="spice-image">
-            <span class="spice-name">Cloves</span>
-            <p class="spice-description">Cloves have a strong, spicy aroma and are used to add warmth and depth to Indian curries and rice dishes. They are also known for their medicinal properties.</p>
-        </li>
-        <li>
-            <img src="./piictures/Garam Masala.jpeg" alt="Black Pepper" class="spice-image">
-            <span class="spice-name">Black Pepper</span>
-            <p class="spice-description">Native to India, black pepper adds heat and depth to many dishes. It is also used in Ayurvedic medicine for its potential health benefits.</p>
-        </li>
-        <li>
-            <img src="./piictures/spices.jpeg" alt="Fenugreek" class="spice-image">
-            <span class="spice-name">Fenugreek</span>
-            <p class="spice-description">Fenugreek seeds have a slightly bitter, nutty flavor. They are used in curries, pickles, and spice blends, as well as for their health benefits.</p>
-        </li>
-        <li>
-            <img src="./piictures/mustard.jpeg" alt="Mustard Seeds" class="spice-image">
-            <span class="spice-name">Mustard Seeds</span>
-            <p class="spice-description">Mustard seeds are used in Indian cuisine for their sharp, pungent flavor. They are often fried in oil to release their flavor before adding other ingredients.</p>
-        </li>
-        <li>
-            <img src="./piictures/391304.jpg" alt="Asafoetida" class="spice-image">
-            <span class="spice-name">Asafoetida</span>
-            <p class="spice-description">A unique spice with a pungent smell, asafoetida is used in small amounts to add depth to curries and lentil dishes. It is also known for its digestive benefits.</p>
-        </li>
-        <li>
-            <img src="./piictures/saffron.jpeg" alt="Saffron" class="spice-image">
-            <span class="spice-name">Saffron</span>
-            <p class="spice-description">Saffron is a highly prized spice known for its distinct aroma and rich golden color. It is used in biryanis, sweets, and special dishes in Indian cuisine.</p>
-        </li>
-    </ol>
+<style>
+  header {
+    position: relative;
+    width: 100%;
+    height: 250px; /* adjust as needed */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
 
+  header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  header h1 {
+    position: relative;
+    z-index: 1;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 28px;
+  }
+</style>
+
+
+    <nav>
+        <a href="#delhi">Delhi</a>
+        <a href="#mumbai">Mumbai</a>
+        <a href="#bengaluru">Bengaluru</a>
+        <a href="#chennai">Chennai</a>
+        <a href="#kolkata">Kolkata</a>
+        <a href="#himachal">Himachal Pradesh</a>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview</h2>
+            <p>India’s cities and states showcase a blend of heritage, progress, and natural beauty. From the bustling streets of Delhi and Mumbai to the serene hills of Himachal Pradesh, each region contributes uniquely to the nation’s diversity and charm. Explore the maps below to learn more about these fascinating places.</p>
+        </section>
+
+        <section id="delhi">
+            <h2>1. Delhi — The National Capital</h2>
+            <p>Delhi, India’s capital, is a living museum of history and modernity. It is home to government offices, iconic landmarks like the India Gate, and world-class educational institutions. Old Delhi’s narrow streets and New Delhi’s wide avenues define its unique charm.</p>
+            <div class="city-facts">
+                <strong>Quick Facts:</strong>
+                <ul>
+                    <li><strong>Population:</strong> ~19 million</li>
+                    <li><strong>Famous for:</strong> Monuments, Parliament, Mughal architecture</li>
+                    <li><strong>Region:</strong> Northern India</li>
+                </ul>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps?q=delhi,+india&output=embed"></iframe>
+            </div>
+        </section>
+
+        <section id="mumbai">
+            <h2>2. Mumbai — The Financial Capital</h2>
+            <p>Mumbai is India’s financial powerhouse and entertainment hub. Its fast-paced lifestyle is balanced by coastal beauty and cultural landmarks. It’s also home to the Gateway of India, Marine Drive, and Bollywood studios.</p>
+            <div class="city-facts">
+                <strong>Quick Facts:</strong>
+                <ul>
+                    <li><strong>Population:</strong> ~20 million</li>
+                    <li><strong>Famous for:</strong> Film industry, finance, colonial architecture</li>
+                    <li><strong>Region:</strong> Western India, Maharashtra</li>
+                </ul>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps?q=mumbai,+india&output=embed"></iframe>
+            </div>
+        </section>
+
+        <section id="bengaluru">
+            <h2>3. Bengaluru — The IT Hub</h2>
+            <p>Bengaluru, the Silicon Valley of India, is a leader in innovation and technology. The city’s pleasant weather, gardens, and startup culture make it one of the most livable cities in India.</p>
+            <div class="city-facts">
+                <strong>Quick Facts:</strong>
+                <ul>
+                    <li><strong>Population:</strong> ~12 million</li>
+                    <li><strong>Famous for:</strong> Technology parks, gardens, education</li>
+                    <li><strong>Region:</strong> Karnataka, South India</li>
+                </ul>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps?q=bengaluru,+india&output=embed"></iframe>
+            </div>
+        </section>
+
+        <section id="chennai">
+            <h2>4. Chennai — The Cultural Capital of South India</h2>
+            <p>Chennai is the soul of Tamil Nadu, known for its classical music, cuisine, and architecture. It’s also a major hub for the automobile and IT industries, located along the scenic Coromandel Coast.</p>
+            <div class="city-facts">
+                <strong>Quick Facts:</strong>
+                <ul>
+                    <li><strong>Population:</strong> ~11 million</li>
+                    <li><strong>Famous for:</strong> Temples, music, automobile manufacturing</li>
+                    <li><strong>Region:</strong> South India, Tamil Nadu</li>
+                </ul>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps?q=chennai,+india&output=embed"></iframe>
+            </div>
+        </section>
+
+        <section id="kolkata">
+            <h2>5. Kolkata — The City of Joy</h2>
+            <p>Kolkata, the cultural heartbeat of India, is famous for its literature, art, and intellectual spirit. It’s a city where colonial heritage meets modern enthusiasm.</p>
+            <div class="city-facts">
+                <strong>Quick Facts:</strong>
+                <ul>
+                    <li><strong>Population:</strong> ~15 million</li>
+                    <li><strong>Famous for:</strong> Literature, art, Durga Puja</li>
+                    <li><strong>Region:</strong> Eastern India, West Bengal</li>
+                </ul>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps?q=kolkata,+india&output=embed"></iframe>
+            </div>
+        </section>
+
+        <section id="himachal">
+            <h2>6. Himachal Pradesh — The Land of Hills</h2>
+            <p>Himachal Pradesh, located in the lap of the Himalayas, is known for its stunning mountains, rivers, and valleys. From Shimla and Manali to Dharamshala, it’s a paradise for nature lovers and adventure seekers.</p>
+            <div class="city-facts">
+                <strong>Quick Facts:</strong>
+                <ul>
+                    <li><strong>Population:</strong> ~7.5 million</li>
+                    <li><strong>Famous for:</strong> Hill stations, trekking, snow-capped mountains</li>
+                    <li><strong>Region:</strong> Northern India, Western Himalayas</li>
+                </ul>
+            </div>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps?q=himachal+pradesh,+india&output=embed"></iframe>
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>Conclusion</h2>
+            <p>From the modern skylines of Bengaluru to the serene valleys of Himachal Pradesh, every region of India has its own charm. Use these maps to explore cities and landscapes that showcase India’s unmatched diversity and spirit.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 India Map Explorer | For educational and informational purposes only.</p>
+    </footer>
 </body>
 </html>

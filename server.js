@@ -1,9 +1,13 @@
-let exp=require("express");
-let mongoose=require("mongoose");
-let server=exp();
-let url='mongodb+srv://raghavdhiman2006:123@raghav.loyrcrt.mongodb.net/'
-const {User,Property}=require("./schema.js");
-let path = require("path");
+import exp from "express";
+import mongoose from "mongoose";
+import path from "path";
+import { fileURLToPath } from "url";
+import { User, Property } from "./schema.js";
+
+const server = exp();
+const url = "mongodb+srv://raghavdhiman2006:123@raghav.loyrcrt.mongodb.net/";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 server.use(exp.json());
 server.use(exp.static(path.join(__dirname, 'public')));
 mongoose.connect(url)
@@ -23,11 +27,17 @@ server.get('/login', (req, res) => {
 server.get('/listing', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'listing.html'));
 });
-server.get('/herbs', (req, res) => {
+server.get('/information', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'herbs.html'));
 });
-server.get('/spices', (req, res) => {
+server.get('/maps', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'spices.html'));
+});
+server.get('/buy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'buy.html'));
+});
+server.get('/about', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'about.html'));
 });
 server.post('/signup', async (req, res) => {
   try {
@@ -102,6 +112,80 @@ server.get('/listfetch', async (req, res) => {
     res.status(500).send({ message: "Failed to fetch listings", error: err.message });
   }
 });
+
+
+
+server.get("/listed", async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email ) {
+      return res.status(400).json({
+        message: "Missing user identifier (email or wallet)",
+      });
+    }
+
+   const filter = {
+      isSold: false,
+      $nor: [
+        
+        { email: email }
+      ]
+    };
+
+    const properties = await Property.find(filter).sort({ listedAt: -1 });
+
+    res.json({ success: true, listings: properties });
+  } catch (err) {
+    console.error("Error fetching listed properties:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+
+server.post("/buy/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { buyerWallet, buyerEmail, blockchainTx } = req.body;
+
+    if (!buyerWallet || !buyerEmail || !blockchainTx) {
+      return res.status(400).json({ message: "Missing buyer details" });
+    }
+
+    const property = await Property.findById(id);
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    if (property.isSold) {
+      return res.status(400).json({ message: "Property already sold" });
+    }
+
+    if (property.owner === buyerWallet || property.email === buyerEmail) {
+      return res.status(400).json({ message: "You already own this property" });
+    }
+
+    // ✅ Update ownership
+    property.previousOwner = property.owner;
+    property.owner = buyerWallet;
+    property.email = buyerEmail;
+    property.blockchainTx = blockchainTx;
+    property.isSold = true;
+    property.soldAt = new Date();
+
+    await property.save();
+
+    res.json({
+      success: true,
+      message: "✅ Property purchased successfully!",
+      property
+    });
+  } catch (err) {
+    console.error("Error buying property:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 
 
 server.listen(3039,()=>console.log("server listening on port 3000"));

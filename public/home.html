@@ -3,466 +3,1063 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RECIPI-VLOGS</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>BlockProperty - Blockchain Property Marketplace</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* ==================== NAVBAR ==================== */
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+
+        .logo {
+            height: 50px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            background: transparent;
+            border: none;
+            font-weight: 500;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 15px;
+        }
+
+        .nav-tab:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .searchBox {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+        }
+
+        .searchInput {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 200px;
+            font-size: 14px;
+        }
+
+        .searchButton {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .searchButton:hover {
+            transform: scale(1.1);
+        }
+
+        /* Settings Menu Button */
+        .settings-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .settings-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Settings Dropdown */
+        .settings-menu {
+            position: fixed;
+            top: 80px;
+            right: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            min-width: 320px;
+            display: none;
+            z-index: 1000;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-menu.active {
+            display: block;
+        }
+
+        .settings-menu-inner {
+            padding: 1.5rem;
+        }
+
+        .user-profile-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            border: 3px solid white;
+        }
+
+        .user-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-address {
+            font-size: 12px;
+            opacity: 0.9;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem;
+            border-radius: 8px;
+            word-break: break-all;
+        }
+
+        .menu-section {
+            margin: 1rem 0;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            color: #2d3748;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: #f7fafc;
+            transform: translateX(5px);
+        }
+
+        .menu-icon {
+            font-size: 20px;
+        }
+
+        .connect-wallet-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 1rem 0;
+        }
+
+        .connect-wallet-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(72, 187, 120, 0.3);
+        }
+
+        .wallet-connected {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            padding: 1rem;
+            border-radius: 12px;
+            color: white;
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        /* ==================== MAIN CONTENT ==================== */
+        .page-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        .hero-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #718096;
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-btn {
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .cta-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .cta-btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ==================== PROPERTIES SECTION ==================== */
+        .properties-section {
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .property-content {
+            padding: 1.5rem;
+        }
+
+        .property-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-location {
+            color: #718096;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .property-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .property-owner {
+            font-size: 0.875rem;
+            color: #718096;
+            background: #f7fafc;
+            padding: 0.5rem;
+            border-radius: 8px;
+            word-break: break-all;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-view {
+            flex: 1;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-view:hover {
+            transform: scale(1.05);
+        }
+
+        /* ==================== BLOCKCHAIN BADGE ==================== */
+        .blockchain-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        /* ==================== FEATURES ==================== */
+        .features-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            background: #f7fafc;
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        /* ==================== LOGOUT BUTTON ==================== */
+        .logout-btn {
+            background: linear-gradient(135deg, #f56565 0%, #c53030 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            border: none;
+            width: 100%;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245, 101, 101, 0.3);
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-center {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-btn {
+                width: 100%;
+            }
+
+            .settings-menu {
+                right: 1rem;
+                left: 1rem;
+                width: auto;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- ==================== NAVBAR ==================== -->
     <nav>
         <div class="nav-container">
-            <!-- Logo -->
             <div class="nav-left">
-                <img class="logo" src="./piictures/Food Hub.png" alt="RECIPI LOGO">
+                <img class="logo" src="https://res.cloudinary.com/dys5oojz9/image/upload/v1762856351/LOGO0_go7qag.png" alt="BlockProperty Logo" onclick="window.location.href='/'">
             </div>
 
-            <!-- Tabs (Radio buttons) -->
-            <div class="container">
-                <div class="tabs">
-                    <input type="radio" id="radio-1" name="tabs" checked="">
-                    <label class="tab" for="radio-1">Home<span class="notification">2</span></label>
-                    <input type="radio" id="radio-2" name="tabs">
-                    <label class="tab" for="radio-2">Discover</label>
-                    <input type="radio" id="radio-3" name="tabs">
-                    <label class="tab" for="radio-3">Updates</label>
-                    <span class="glider"></span>
-                </div>
-            </div>
+            <div class="nav-center">
+    <button class="nav-tab active" onclick="window.location.href='/'">🏠 Home</button>
+    <button class="nav-tab" onclick="window.location.href='/maps'">🔍 Maps</button>
+    <button class="nav-tab" onclick="window.location.href='/information'">📋 Information</button>
+</div>
 
-            <!-- Search Box and Filter Button -->
             <div class="nav-right">
                 <div class="searchBox">
-                    <input type="text" class="searchInput" placeholder="Search">
-                    <button class="searchButton">
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <input type="text" class="searchInput" placeholder="Search properties...">
+                    <button class="searchButton" onclick="searchProperties()">
+                        <svg viewBox="0 0 24 24" fill="none" width="20" height="20">
                             <path d="M23 21L16.6569 14.6569" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <circle cx="11" cy="11" r="8" stroke="#fff" stroke-width="2"/>
                         </svg>
                     </button>
                 </div>
-
-                <!-- Filter button -->
-                <button title="filter" class="filter" onclick="settingsMenuToggle()">
-                    <svg viewBox="0 0 512 512" height="1em">
-                        <path d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z"></path>
-                    </svg>
+                <button class="settings-btn" onclick="toggleSettings()">
+                    ⚙️ Menu
                 </button>
+            </div>
+        </div>
 
-            <!-- Settings menu -->
-            <div class="settings-menu" id="subMenu">
-                <div id="dark-btn">
-                    <span></span>
-                </div>
-                <div class="settings-menu-inner">
-                    <!-- Replacing user profile with an Avatar component -->
-                    <div class="user-profile">
-                        <!-- Avatar -->
-                        <div class="avatar">
-                            <img class="avatar-image" src="./piictures/avatar.png" alt="User Avatar">
-                            <div class="avatar-fallback">CN</div>
-                        </div>
-                            <p>User Name</p>
-                            <a href="#">See your profile</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="user-profile">
-                        <img src="./piictures/cloves.jpeg" alt="">
-                        <div>
-                            <p>Give Feedback</p>
-                            <a href="#">Help us to improve the new design</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="settings-links">
-                        <a href="#">Settings & Privacy <img src="./piictures/Garam Masala.jpeg" width="10px" alt=""></a>
-                    </div>
-                    <div class="settings-links">
-                        <img class="settings-icon" src="./piictures/cinnamon.jpeg" alt="">
-                        <a href="#">Help & Support <img src="./piictures/fenugreek(methi).jpeg" width="10px" alt=""></a>
-                    </div>
-                    <div class="settings-links">
-                        <img class="settings-icon" src="./piictures/cloves.jpeg" alt="">
-                        <a href="#">Display & Accessibility <img src="./piictures/saffron.jpeg" width="10px" alt=""></a>
-                    </div>
-                    <div class="register-link">
-                        <div class="settings-links">
-                        <img class="settings-icon" src="./piictures/spices.jpeg" alt="">
-                        <a href="/registrations">register <img src="./piictures/Asafoetida.jpeg" width="10px" alt="" class="register"></a>
-                    </div>
-
-                           </div>
-                    
-                    <div class="settings-links">
-                        <img class="settings-icon" src="./piictures/cloves.jpeg" alt="">
-                        <a href="#">Display & Accessibility <img src="./piictures/saffron.jpeg" width="10px" alt=""></a>
-                    </div>
-                    <div class="settings-links"></div>
-                        <img class="settings-icon" src="./piictures/spices.jpeg" alt="">
-                        <a href="#" id="logout-link">Logout<img src="./piictures/Asafoetida.jpeg" width="10px" alt=""></a>
+        <!-- Settings Dropdown -->
+        <div class="settings-menu" id="settingsMenu">
+            <div class="settings-menu-inner">
+                <div class="user-profile-card">
+                    <img class="user-avatar" src="./piictures/avatar.png" alt="User Avatar">
+                    <div class="user-name" id="displayUsername">Guest User</div>
+                    <div class="wallet-address" id="displayWallet" style="display: none;">
+                        Not Connected
                     </div>
                 </div>
+
+                <!-- Connect/Disconnect Wallet -->
+                <div id="walletSection"></div>
+
+                <div class="menu-section">
+                    <a href="/listing" class="menu-item" id="listingLink" style="display: none;">
+                        <span class="menu-icon">🏠</span>
+                        <span>List Property</span>
+                    </a>
+                    <a href="/buy" class="menu-item" id="buyLink" style="display: none;">
+                        <span class="menu-icon">💰</span>
+                        <span>Buy Properties</span>
+                    </a>
+                    <a href="/registrations" class="menu-item" id="registerLink">
+                        <span class="menu-icon">📝</span>
+                        <span>Register</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="alert('Settings coming soon!')">
+                        <span class="menu-icon">⚙️</span>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="menu-item" onclick="window.location.href='/about'">
+                        <span class="menu-icon"></span>
+                        <span>About</span>
+                    </a>
+                </div>
+
+                <button class="logout-btn" id="logoutBtn" style="display: none;">
+                    🚪 Logout
+                </button>
             </div>
         </div>
     </nav>
 
-    <div class="container">
-
-        <!-- ---------Left Sidebar ------------ -->
-        <div class="left-sidebar">
-            <div class="imp-links">
-                <a href="./spices.html"><img src="./piictures/spices.jpeg" alt="" /> Spices </a>
-                <a href="./herbs.html"><img src="./piictures/cumin.jpeg.jpeg" alt="" /> Herbs </a>
-                <a href="#"><img src="./piictures/saffron.jpeg" alt="" /> Post </a>
-                <a href="#"><img src="./piictures/pexels-peter-olexa-3875821.jpg" alt="" /> Marketplace
-                </a>
-                <a href="#">See More</a>
+    <!-- ==================== MAIN CONTENT ==================== -->
+    <div class="page-container">
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="blockchain-badge">
+                ⛓️ Powered by Blockchain
             </div>
-            <div class="shortcut-links">
-                <p>Discover New</p>
-                <a href="#"><img src="./piictures/spices.jpeg" alt="" /> Traditional Flavours</a>
-                <a href="#"><img src="./piictures/pexels-pixabay-459225.jpg" alt="" /> New Cuisines</a>
-           </div>
+            <h1 class="hero-title">Welcome to BlockProperty</h1>
+            <p class="hero-subtitle">
+                Buy, Sell, and Own Properties on the Blockchain.<br>
+                Secure, Transparent, and Decentralized.
+            </p>
+            <div class="cta-buttons">
+                <button class="cta-btn cta-btn-primary" onclick="goToListing()">🏠 List Your Property</button>
+                <button class="cta-btn cta-btn-secondary" onclick="scrollToProperties()">🔍 Browse Properties</button>
+            </div>
         </div>
 
-        
-        <div class="main-content" ">
-            <div class="story-gallery">
-
-                <div class="story story1">
+        <!-- Features Section -->
+        <div class="features-section">
+            <h2 class="section-title" style="color: #2d3748;">Why Choose BlockProperty?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">Secure Transactions</h3>
+                    <p class="feature-description">
+                        All transactions are secured by blockchain technology and smart contracts.
+                    </p>
                 </div>
-
-                <div class="story story2">
-                    <img src="./piictures/doggy.jpeg" alt="" />
-                    <p>Bat</p>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Instant Transfers</h3>
+                    <p class="feature-description">
+                        Property ownership transfers happen instantly on the blockchain.
+                    </p>
                 </div>
-                <div class="story story3">
-                    <img src="./piictures/doggy2.jpeg" alt="" />
-                    <p>Cat</p>
+                <div class="feature-card">
+                    <div class="feature-icon">👁️</div>
+                    <h3 class="feature-title">Transparent</h3>
+                    <p class="feature-description">
+                        Every transaction is recorded on the blockchain and publicly verifiable.
+                    </p>
                 </div>
-                <div class="story story4">
-                    <img src="./piictures/doggy3.jpeg" alt="" />
-                    <p>Rat</p>
-                </div>
-                <div class="story story5">
-                    <img src="./piictures/dogyy5.png" alt="" />
-                    <p>Hat</p>
-                </div>
-
-            </div>
-        
-            <div class="write-post-container">
-
-                <div class="user-profile">
-                    <img src="C:\New folder\site code 3\doggy.jpeg" alt="" />
-                    <div>
-                        <p>Doggy_1</p>
-                        <small>Septemper 26 2022, 13:58 <i class="fa-solid fa-caret-down"></i></small>
-                    </div>
-                </div>
-
-                <div class="post-input-container">
-                    <textarea rows="3" placeholder="Join me in my cookin classes "></textarea>
-                    <div class="add-post-links">
-                        <a href="#"><img src="C:\New folder\site code 3\piictures\like.png" alt="" /> Like</a>
-                        <a href="#"><img src="C:\New folder\site code 3\piictures\comment.png"  alt="" /> Comments</a>
-                        <a href="#"><img src="C:\New folder\site code 3\piictures\share.png" alt="" />Share</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="post-container">
-                <div class="post-row">
-
-                    <div class="user-profile">
-                        <img src="./piictures/doggy.jpeg" alt="" />
-                        <div>
-                            <p>Doggy_2</p>
-                            <span>August 26 2022, 13:58 </span>
-                        </div>
-                    </div>
-                    <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
-
-                </div>
-
-                <p class="post-text">
-                    Tried cooking hot and sour chicken sout
-                    Must watch recipi guys! Check my YouTube<a href="https://youtu.be/XSF9AOx7sdU?si=fFgSxyvVUttTjjMI">#youtube</a>
-                </p>
-                <img class="post-img" src="./piictures/post2.jpg" alt="" />
-
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><img src="C:\New folder\site code 3\piictures\like.png" alt="" /> Like</div>
-                        <div><img src="C:\New folder\site code 3\piictures\comment.png"  alt="" /> Comments</div>
-                        <div><img src="C:\New folder\site code 3\piictures\share.png" alt="" /> Share</div>
-                    </div>
-                    <div class="post-profile-icon">
-                        <img src="./piictures/coriander.jpeg.jpg" alt="" />
-                        <i class="fa-solid fa-caret-down"></i>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="post-container">
-                <div class="post-row">
-
-                    <div class="user-profile">
-                        <img src="./piictures/doggy2.jpeg" alt="" />
-                        <div>
-                            <p>Sheru@420</p>
-                            <span>August 15 1947, 00:01 </span>
-                        </div>
-                    </div>
-                    <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
-
-                </div>
-
-                <p class="post-text">
-                    Check out my new list on mustard, its verities and its producers
-                    <a href="#">#Discovernew</a>
-                    <a href="#">#Explorer</a>
-                </p>
-                <img class="post-img" src="./piictures/mustard.jpeg" alt="" />
-
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><img src="C:\New folder\site code 3\piictures\like.png" alt="" /> Like</div>
-                        <div><img src="C:\New folder\site code 3\piictures\comment.png"  alt="" /> Comments</div>
-                        <div><img src="C:\New folder\site code 3\piictures\share.png" alt="" /> Share</div>
-                    </div>
-                    <div class="post-profile-icon">
-                        <img src="./piictures/coriander.jpeg.jpg" alt="" />
-                        <i class="fa-solid fa-caret-down"></i>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="post-container">
-                <div class="post-row">
-
-                    <div class="user-profile">
-                        <img src="C:\New folder\site code 3\piictures\dogyy5.png" alt="" />
-                        <div>
-                            <p>Cat_slimshady</p>
-                            <span>Austin, Downtown </span>
-                        </div>
-                    </div>
-                    <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
-
-                </div>
-
-                <p class="post-text">
-                    Owner of the biggest spice chain in the whole Australian and American market. Want to know my secret? follow->
-                    <a href="#">slimshady.org</a>
-                    <a href="#">#YouTube</a>
-                </p>
-                <img class="post-img" src="./piictures/bruce.jpg" alt="" />
-
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><img src="C:\New folder\site code 3\piictures\like.png" alt="" /> Like</div>
-                        <div><img src="C:\New folder\site code 3\piictures\comment.png"  alt="" /> Comments</div>
-                        <div><img src="C:\New folder\site code 3\piictures\share.png" alt="" /> Share</div>
-                    </div>
-                    <div class="post-profile-icon">
-                        <img src="./piictures/pexels-pixabay-459225.jpg" alt="" />
-                        <i class="fa-solid fa-caret-down"></i>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="post-container">
-                <div class="post-row">
-
-                    <div class="user-profile">
-                        <img src="C:\New folder\site code 3\piictures\Screenshot 2024-09-26 151148.png" alt="" />
-                        <div>
-                            <p>Arkham_Knight</p>
-                            <span>Gotham city </span>
-                        </div>
-                    </div>
-                    <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
-
-                </div>
-
-                <p class="post-text">
-                    Check out my new bat theme shepherd's pie recipi!
-                </p>
-                <img class="post-img" src="./piictures/batman pie.jpeg" alt="" />
-
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><img src="C:\New folder\site code 3\piictures\like.png" alt="" /> LIKE</div>
-                        <div><img src="C:\New folder\site code 3\piictures\comment.png"  alt="" /> Comments</div>
-                        <div><img src="C:\New folder\site code 3\piictures\share.png"" alt="" /> Share</div>
-                    </div>
-                    <div class="post-profile-icon">
-                        <img src="./piictures/turmeric.jpeg" alt="" />
-                        <i class="fa-solid fa-caret-down"></i>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="post-container">
-                <div class="post-row">
-
-                    <div class="user-profile">
-                        <img src="C:\New folder\site code 3\piictures\Screenshot 2024-09-26 152712.png" alt="" />
-                        <div>
-                            <p>Ester_Choi.mocbar</p>
-                            <span>La, NYC </span>
-                        </div>
-                    </div>
-                    <a href="#"><i class="fa-solid fa-ellipsis-vertical"></i></a>
-
-                </div>
-
-                <p class="post-text">
-                    Hey guys! This is your pro chef Ester and today I am gonna share my fried rice 
-                    recipi with you all. Hope you like it... Peace!.
-                    <a href="#">Recipi</a>
-                    <a href="#">#YouTubeChannel</a>
-                </p>
-                <img class="post-img" src="./piictures/Chef1.jpeg" alt="" />
-
-                <div class="post-row">
-                    <div class="activity-icons">
-                        <div><img src="C:\New folder\site code 3\piictures\like.png" alt="" /> like</div>
-                        <div><img src="C:\New folder\site code 3\piictures\comment.png" alt="" /> Comments</div>
-                        <div><img src="C:\New folder\site code 3\piictures\share.png" alt="" /> Share</div>
-                    </div>
-                    <div class="post-profile-icon">
-                        <img src="./piictures/pexels-pixabay-459225.jpg" alt="" />
-                        <i class="fa-solid fa-caret-down"></i>
-                    </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💎</div>
+                    <h3 class="feature-title">True Ownership</h3>
+                    <p class="feature-description">
+                        You own your property through your MetaMask wallet - no middlemen.
+                    </p>
                 </div>
             </div>
-
-            <button type="button" class="load-more-btn">Load More</button>
         </div>
 
-
-
-        <!-- ---------Right Sidebar ------------ -->
-        <div class="right-sidebar">
-            <div class="sidebar-title">
-                <h4>New Stuff!</h4>
-                <a href="#">See All</a>
-            </div>
-
-            <div class="event">
-                <div class="left-event">
-                    <h3>18</h3>
-                    <span>March</span>
-                </div>
-                <div class="right-event">
-                    <h4>Dominos</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Food Republic</p>
-                    <a href="#">More Info</a>
+        <!-- Properties Section -->
+        <div class="properties-section" id="properties">
+            <h2 class="section-title">🏡 Available Properties</h2>
+            <div class="properties-grid" id="propertiesGrid">
+                <!-- Properties will be loaded here -->
+                <div class="property-card">
+                    <img class="property-image" src="./piictures/default.png" alt="Property">
+                    <div class="property-content">
+                        <h3 class="property-title">Loading properties...</h3>
+                        <div class="property-location">
+                            📍 Please wait...
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <div class="event">
-                <div class="left-event">
-                    <h3>22</h3>
-                    <span>June</span>
-                </div>
-                <div class="right-event">
-                    <h4>Chicken Roll</h4>
-                    <p><i class="fas fa-map-marker-alt"></i> Zakir-C</p>
-                    <a href="#">More Info</a>
-                </div>
-            </div>
-            <hr/>
-            <div class="sidebar-title">
-                <h4>Extra Material</h4>
-            </div>
+        </div>
     </div>
-    <script src="script.js"> </script>
-</body>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const isLogin = localStorage.getItem("isLogin") === "true";
-    const username = localStorage.getItem("user") || "Guest";
+    <script>
+        // ==================== STATE MANAGEMENT ====================
+        let isLogin = localStorage.getItem("isLogin") === "true";
+        let username = localStorage.getItem("user") || "Guest";
+        let isMetaMaskConnected = localStorage.getItem("metamaskConnected") === "true";
+        let walletAddress = localStorage.getItem("walletAddress");
 
-    const registerLink = document.querySelector('a[href="/registrations"]');
-    const userNameElement = document.querySelector(".user-profile p");
-    const settingsMenu = document.querySelector(".settings-menu-inner");
+        // ==================== INITIALIZATION ====================
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("Page loaded");
+            updateUI();
+            loadProperties();
+            setupEventListeners();
+        });
 
-    if (userNameElement) userNameElement.textContent = username;
+        // ==================== SETUP EVENT LISTENERS ====================
+        function setupEventListeners() {
+            // Logout button
+            const logoutBtn = document.getElementById("logoutBtn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", handleLogout);
+            }
 
-    if (isLogin) {
-        // Show and rename register link
-        if (registerLink) {
-            registerLink.textContent = "Start Listing";
-            registerLink.href = "/listing";
-            registerLink.style.display = "inline-block";
+            // Close settings menu when clicking outside
+            document.addEventListener("click", (e) => {
+                const menu = document.getElementById("settingsMenu");
+                const settingsBtn = document.querySelector(".settings-btn");
+                
+                if (menu && settingsBtn && 
+                    !menu.contains(e.target) && 
+                    !settingsBtn.contains(e.target)) {
+                    menu.classList.remove("active");
+                }
+            });
+
+            // MetaMask account changes
+            if (typeof window.ethereum !== "undefined") {
+                window.ethereum.on("accountsChanged", handleAccountsChanged);
+            }
         }
-    } else {
-        // Hide register and logout when not logged in
-        if (registerLink)   registerLink.textContent = "register";
-            registerLink.href = "/registrations";
-            registerLink.style.display = "inline-block";
-        if (settingsMenu) {
-            const logoutLink = Array.from(settingsMenu.querySelectorAll("a"))
-                .find(a => a.textContent.trim().toLowerCase().includes("logout"));
-            if (logoutLink) logoutLink.style.display = "none";
-        }
-    }
 
-    // ✅ Story-gallery logic starts here
-    const storyGallery = document.querySelector(".story-gallery");
+        // ==================== UI UPDATE ====================
+        function updateUI() {
+            console.log("Updating UI...");
+            const displayUsername = document.getElementById("displayUsername");
+            const displayWallet = document.getElementById("displayWallet");
+            const walletSection = document.getElementById("walletSection");
+            const logoutBtn = document.getElementById("logoutBtn");
+            const listingLink = document.getElementById("listingLink");
+            const buyLink = document.getElementById("buyLink");
+            const registerLink = document.getElementById("registerLink");
 
-    if (!isLogin) {
-         document.getElementById("logout-link").style.display = "none";
-        if (storyGallery) storyGallery.style.display = "none";
-    } else {
-        const user = localStorage.getItem("user");
-        if (user) {
-            fetch(`/listfetch?email=${user}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.listings && data.listings.length > 0) {
-                        storyGallery.innerHTML = "";
-                        data.listings.forEach(item => {
-                            const div = document.createElement("div");
-                            div.classList.add("story");
-                            div.innerHTML = `
-                                <img src="./piictures/default.png" alt="">
-                                <p>${item.Name} (${item.city}) - ₹${item.price}</p>
-                            `;
-                            storyGallery.appendChild(div);
-                        });
-                    } else {
-                        storyGallery.innerHTML = "<p>No properties listed yet.</p>";
+            if (displayUsername) displayUsername.textContent = username;
+
+            if (isLogin) {
+                console.log("User is logged in");
+                // User is logged in
+                if (logoutBtn) logoutBtn.style.display = "block";
+                if (registerLink) registerLink.style.display = "none";
+
+                if (isMetaMaskConnected && walletAddress) {
+                    console.log("Wallet connected:", walletAddress);
+                    // Wallet connected
+                    if (displayWallet) {
+                        displayWallet.style.display = "block";
+                        displayWallet.textContent = `${walletAddress.substring(0, 8)}...${walletAddress.substring(38)}`;
                     }
-                })
-                .catch(err => {
-                    console.error("Error fetching listings:", err);
-                    storyGallery.innerHTML = "<p>Failed to load properties.</p>";
-                });
+                    
+                    if (walletSection) {
+                        walletSection.innerHTML = `
+                            <div class="wallet-connected">
+                                ✅ Wallet Connected
+                            </div>
+                        `;
+                    }
+
+                    if (listingLink) listingLink.style.display = "flex";
+                    if (buyLink) buyLink.style.display = "flex";
+                } else {
+                    console.log("Wallet not connected");
+                    // Wallet not connected
+                    if (displayWallet) displayWallet.style.display = "none";
+                    
+                    if (walletSection) {
+                        walletSection.innerHTML = `
+                            <div class="connect-wallet-btn" onclick="connectMetaMask()">
+                                🦊 Connect MetaMask
+                            </div>
+                        `;
+                    }
+
+                    if (listingLink) listingLink.style.display = "none";
+                    if (buyLink) buyLink.style.display = "none";
+                }
+            } else {
+                console.log("User not logged in");
+                // User not logged in
+                if (logoutBtn) logoutBtn.style.display = "none";
+                if (registerLink) registerLink.style.display = "flex";
+                if (listingLink) listingLink.style.display = "none";
+                if (buyLink) buyLink.style.display = "none";
+                if (displayWallet) displayWallet.style.display = "none";
+                
+                if (walletSection) {
+                    walletSection.innerHTML = `
+                        <div class="connect-wallet-btn" onclick="goToRegister()">
+                            📝 Login to Connect Wallet
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // ==================== METAMASK CONNECTION ====================
+       // ==================== METAMASK CONNECTION ====================
+async function connectMetaMask() {
+    console.log("Connect MetaMask clicked");
+    
+    if (!isLogin) {
+        alert("Please login first!");
+        window.location.href = "/registrations";
+        return;
+    }
+
+    if (typeof window.ethereum === "undefined") {
+        alert("❌ MetaMask not found! Please install MetaMask extension.");
+        window.open("https://metamask.io/download/", "_blank");
+        return;
+    }
+
+    try {
+        console.log("Requesting wallet permissions...");
+        
+        // This forces MetaMask popup to show every time
+        await window.ethereum.request({
+            method: "wallet_requestPermissions",
+            params: [{
+                eth_accounts: {}
+            }]
+        });
+        
+        // After permission, get the accounts
+        const accounts = await window.ethereum.request({ 
+            method: "eth_requestAccounts" 
+        });
+        
+        walletAddress = accounts[0];
+        localStorage.setItem("metamaskConnected", "true");
+        localStorage.setItem("walletAddress", walletAddress);
+        
+        alert(`✅ MetaMask Connected!\n\nWallet: ${walletAddress}`);
+        location.reload();
+        
+    } catch (error) {
+        console.error("MetaMask error:", error);
+        if (error.code === 4001) {
+            alert("❌ Connection rejected by user!");
+        } else if (error.code === -32002) {
+            alert("⏳ MetaMask is already processing a request. Please check your MetaMask extension.");
+        } else {
+            alert("❌ Failed to connect MetaMask: " + error.message);
         }
     }
-});
-
-const logoutBtn = document.getElementById("logout-link");
-
-if (logoutBtn) {
-    logoutBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        localStorage.removeItem("isLogin");
-        localStorage.removeItem("user");
-        alert("You have been logged out.");
-        location.reload();
-    });
 }
-</script>
 
+        // ==================== LOGOUT ====================
+        function handleLogout(e) {
+            e.preventDefault();
+            console.log("Logout clicked");
+            
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.clear();
+                alert("👋 Logged out successfully!");
+                window.location.href = "/";
+            }
+        }
 
+        // ==================== SETTINGS TOGGLE ====================
+        function toggleSettings() {
+            console.log("Toggle settings clicked");
+            const menu = document.getElementById("settingsMenu");
+            if (menu) {
+                menu.classList.toggle("active");
+            }
+        }
 
+        // ==================== TAB SWITCHING ====================
+        function switchTab(element, tab) {
+            console.log("Switch tab:", tab);
+            const tabs = document.querySelectorAll(".nav-tab");
+            tabs.forEach(t => t.classList.remove("active"));
+            element.classList.add("active");
+            
+            // Add your tab switching logic here
+            if (tab === 'myproperties') {
+                loadMyProperties();
+            }
+        }
+
+        // ==================== NAVIGATION FUNCTIONS ====================
+        function goToListing() {
+            console.log("Go to listing");
+            if (!isLogin) {
+                alert("Please login first!");
+                window.location.href = "/registrations";
+                return;
+            }
+            if (!isMetaMaskConnected) {
+                alert("Please connect MetaMask first!");
+                toggleSettings();
+                return;
+            }
+            window.location.href = "/listing";
+        }
+
+        function goToRegister() {
+            console.log("Go to register");
+            window.location.href = "/registrations";
+        }
+
+        function scrollToProperties() {
+            console.log("Scroll to properties");
+            document.getElementById("properties").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function searchProperties() {
+            console.log("Search properties");
+            const searchInput = document.querySelector(".searchInput");
+            alert(`Searching for: ${searchInput.value}`);
+            // Add your search logic here
+        }
+
+        // ==================== LOAD PROPERTIES ====================
+        async function loadProperties() {
+    console.log("Loading properties...");
+    const grid = document.getElementById("propertiesGrid");
+    
+    try {
+        const userEmail = localStorage.getItem("user") || "";
+        console.log("Fetching properties for:", userEmail);
+        
+        const response = await fetch(`/listfetch?email=${userEmail}`);
+        console.log("Response status:", response.status);
+        
+        const data = await response.json();
+        console.log("Full API response:", data);
+        
+        // Handle different response formats
+        let properties = [];
+        
+        if (data.listings && Array.isArray(data.listings)) {
+            properties = data.listings;
+        } else if (Array.isArray(data)) {
+            properties = data;
+        } else if (data.success && data.listings) {
+            properties = data.listings;
+        }
+        
+        console.log("Properties array:", properties);
+        console.log("Properties count:", properties.length);
+        
+        if (properties.length > 0) {
+            grid.innerHTML = ""; // Clear loading message
+            
+            properties.forEach((property, index) => {
+                console.log(`Property ${index}:`, property);
+                
+                const card = document.createElement("div");
+                card.className = "property-card";
+                card.innerHTML = `
+                    <img class="property-image" src="./piictures/default.png" alt="${property.Name || 'Property'}">
+                    <div class="property-content">
+                        <h3 class="property-title">${property.Name || 'Unnamed Property'}</h3>
+                        <div class="property-location">
+                            📍 ${property.city || 'Location not specified'}
+                        </div>
+                        <div class="property-price">
+                            ${property.price || property.priceInETH || '0'} ETH
+                        </div>
+                        ${property.owner ? `
+                        <div class="property-owner">
+                            Owner: ${property.owner.substring(0, 6)}...${property.owner.substring(38)}
+                        </div>
+                        ` : ''}
+                        ${property.blockchainTx ? `
+                        <div class="property-owner" style="margin-top: 0.5rem;">
+                            Tx: ${property.blockchainTx.substring(0, 10)}...
+                        </div>
+                        ` : ''}
+                        <div class="property-actions">
+                            <button class="btn-view" onclick="viewProperty('${property._id || property.id}')">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            console.log("✅ Properties rendered successfully");
+        } else {
+            console.log("⚠️ No properties found");
+            grid.innerHTML = `
+                <div class="property-card">
+                    <div class="property-content" style="text-align: center; padding: 3rem;">
+                        <h3 class="property-title">No Properties Listed Yet</h3>
+                        <p style="color: #718096; margin-top: 1rem;">
+                            Be the first to list a property on the blockchain!
+                        </p>
+                        <button class="cta-btn cta-btn-primary" onclick="goToListing()" style="margin-top: 1.5rem;">
+                            🏠 List Property
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error("❌ Error loading properties:", error);
+        grid.innerHTML = `
+            <div class="property-card">
+                <div class="property-content" style="text-align: center; padding: 3rem;">
+                    <h3 class="property-title">Error Loading Properties</h3>
+                    <p style="color: #f56565; margin-top: 1rem;">
+                        ${error.message}
+                    </p>
+                    <button class="cta-btn cta-btn-secondary" onclick="loadProperties()" style="margin-top: 1.5rem;">
+                        🔄 Retry
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+}
+
+        function loadMyProperties() {
+            console.log("Loading my properties");
+            if (!isLogin) {
+                alert("Please login first!");
+                return;
+            }
+            loadProperties();
+        }
+
+        function viewProperty(id) {
+            console.log("View property:", id);
+            alert(`Viewing property: ${id}\n\nProperty details page coming soon!`);
+        }
+
+        // ==================== METAMASK ACCOUNT CHANGES ====================
+        function handleAccountsChanged(accounts) {
+            console.log("Accounts changed:", accounts);
+            
+            if (!isLogin) return;
+            
+            if (accounts.length === 0) {
+                localStorage.removeItem("metamaskConnected");
+                localStorage.removeItem("walletAddress");
+                alert("🔌 MetaMask disconnected!");
+                location.reload();
+            } else {
+                localStorage.setItem("walletAddress", accounts[0]);
+                alert("🔄 Wallet account changed!");
+                location.reload();
+            }
+        }
+
+        // ==================== CONSOLE LOG FOR DEBUGGING ====================
+        console.log("Current state:", {
+            isLogin,
+            username,
+            isMetaMaskConnected,
+            walletAddress
+        });
+    </script>
+</body>
 </html>

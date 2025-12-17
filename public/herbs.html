@@ -1,25 +1,215 @@
-{% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Centered Image Demo</title>
-    <!-- Bootstrap CSS Link -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Laws in India</title>
     <style>
-      /* Additional CSS for centering the image */
-      .img-container {
-        display: flex;
-        justify-content: center; /* Center the image */
-      }
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            margin: 0;
+            background-color: #f2f5f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #717985;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #002e73;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav a:hover {
+            background-color: #004aad;
+        }
+
+        main {
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        section {
+            background-color: white;
+            margin-bottom: 25px;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        h1, h2 {
+            color: #004aad;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        ul {
+            margin-top: 10px;
+        }
+
+        .law-section p {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #003b91;
+            color: white;
+            text-align: center;
+            padding: 12px 0;
+            font-size: 0.9em;
+        }
+
+        .note {
+            background-color: #e8f0ff;
+            padding: 10px 15px;
+            border-left: 4px solid #004aad;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: column;
+            }
+        }
     </style>
-  </head>
-  <body>
-    <div class="container img-container">
-      <!-- Adjusted height to 500 for the image -->
-      <img src="{% static 'images/3.jpg' %}" height="500" class="img-fluid" alt="Centered Image">
-    </div>
-    <h2 class="text-center">Contact us</h2>
-  </body>
+</head>
+<body>
+   <header>
+  <h1>Real Estate Laws in India</h1>
+  <p>Your Guide to Understanding Property Regulations</p>
+
+</header>
+
+<style>
+  header {
+    position: relative;
+    width: 100%;
+    height: 280px; /* Adjust as needed */
+    background-image: url('https://res.cloudinary.com/dys5oojz9/image/upload/v1762857165/photo-collage.png_nxvuao.png');
+    background-size: cover;         /* Ensures the image fills header without stretching */
+    background-position: center;    /* Centers the image */
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+  }
+
+  header::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Adds dark overlay for text readability */
+    z-index: 0;
+  }
+
+  header h1,
+  header p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+  }
+
+  header h1 {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+
+  header p {
+    font-size: 18px;
+  }
+</style>
+
+
+    <nav>
+        <a href="#overview">Overview</a>
+        <a href="#rera">RERA Act</a>
+        <a href="#tpa">Transfer of Property Act</a>
+        <a href="#stamp">Stamp & Registration</a>
+        <a href="#conclusion">Conclusion</a>
+    </nav>
+
+    <main>
+        <section id="overview">
+            <h2>Overview of the Indian Real Estate Sector</h2>
+            <p>The Indian real estate sector is one of the largest contributors to the nation’s GDP and employment. It includes four main sub-sectors — housing, retail, hospitality, and commercial properties. As this sector grew rapidly, the government introduced various laws to promote transparency, protect buyers, and regulate developers.</p>
+            <p>Understanding these laws is essential for anyone planning to buy, sell, or invest in property in India.</p>
+        </section>
+
+        <section class="law-section" id="rera">
+            <h2>1. Real Estate (Regulation and Development) Act, 2016 (RERA)</h2>
+            <p>The <strong>RERA Act</strong> was a landmark reform that brought accountability and efficiency to the real estate market. It requires developers to register their projects and provide regular updates to buyers through state-level RERA websites.</p>
+            <ul>
+                <li><strong>Transparency:</strong> Developers must disclose project details, timelines, and finances.</li>
+                <li><strong>Protection for buyers:</strong> If a builder delays possession, the buyer can claim compensation.</li>
+                <li><strong>Grievance redressal:</strong> Buyers can file complaints with RERA authorities online.</li>
+                <li><strong>Standardization:</strong> Promoters must use standard agreements to prevent hidden clauses.</li>
+            </ul>
+            <div class="note">
+                Example: If a project in Delhi NCR is delayed, the buyer can lodge a complaint with <strong>UP-RERA</strong> or <strong>Haryana-RERA</strong> for resolution.
+            </div>
+        </section>
+
+        <section class="law-section" id="tpa">
+            <h2>2. Transfer of Property Act, 1882</h2>
+            <p>This law defines the legal process of transferring property from one person to another. It covers different types of property transfers such as sale, lease, mortgage, exchange, and gift.</p>
+            <ul>
+                <li><strong>Legal ownership:</strong> Ensures the transfer of valid title from seller to buyer.</li>
+                <li><strong>Rights and obligations:</strong> Specifies the duties of both parties during the transaction.</li>
+                <li><strong>Conditions for valid transfer:</strong> The property must be transferable, and both parties must be competent to contract.</li>
+            </ul>
+            <div class="note">
+                Note: Agricultural land in some states can only be purchased by farmers or residents of that state.
+            </div>
+        </section>
+
+        <section class="law-section" id="stamp">
+            <h2>3. Indian Stamp Act, 1899 & Registration Act, 1908</h2>
+            <p>These two acts together ensure that property transactions are legally recorded and recognized by the government.</p>
+            <ul>
+                <li><strong>Stamp Duty:</strong> A tax paid on the value of the property being transferred. Rates vary by state (typically 4–8%).</li>
+                <li><strong>Registration:</strong> Sale or lease of property for over 12 months must be registered with the local Sub-Registrar Office.</li>
+                <li><strong>Legal proof:</strong> Registered property documents serve as valid proof of ownership in case of disputes.</li>
+            </ul>
+            <div class="note">
+                Example: In Maharashtra, stamp duty on property purchase is around 5% of the market value plus 1% registration fee.
+            </div>
+        </section>
+
+        <section id="conclusion">
+            <h2>Conclusion</h2>
+            <p>Real estate laws in India are designed to create a fair, transparent, and efficient market for both developers and buyers. From ensuring accountability through RERA to securing ownership via registration, each law plays a vital role in protecting public interest.</p>
+            <p><strong>Tip for Buyers:</strong> Always verify RERA registration, check encumbrance certificates, and ensure stamp duty and registration are completed before finalizing a property purchase.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Real Estate Law Guide | This page is for informational and educational purposes only.</p>
+    </footer>
+</body>
 </html>
