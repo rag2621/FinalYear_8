@@ -248,7 +248,7 @@
 
   <script>
     const SEPOLIA_CHAIN_ID = '0xaa36a7';
-    const CONTRACT_ADDRESS = '0x4a72c52bad1d4ecbae77887022c79a51629fe489';
+    const CONTRACT_ADDRESS = '0x6aA426B160Ebb2a52a1F32d19341480192D5d7d7';
     
     const CONTRACT_ABI = [
       {
@@ -387,7 +387,7 @@
         const card = document.createElement("div");
         card.classList.add("property-card");
         card.innerHTML = `
-          <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1744403976/uploads/1000116213.jpg" alt="${p.Name}">
+          <img src="${p.image || './pictures/default.png'}" alt="${p.Name}">
           <h3>${p.Name}</h3>
           <p>📍 ${p.city}</p>
           <p>💰 Price: ₹${p.price?.toLocaleString('en-IN')}</p>
@@ -395,10 +395,10 @@
           <div style="margin: 6px 14px;">
             ${(p.amenities || []).map(a => `<span class="amenity-tag">${a}</span>`).join('')}
           </div>
-          <p style="font-size: 11px; color: var(--muted); margin: 4px 14px;">Property ID: ${index + 1}</p>
+          <p style="font-size: 11px; color: var(--muted); margin: 4px 14px;">Property ID: ${p.blockchainPropertyId || index + 1}</p>
           <button class="buy-btn" 
                   data-id="${p._id}" 
-                  data-property-id="${index + 1}"
+                  data-property-id="${p.blockchainPropertyId || index + 1}"
                   data-eth="${p.priceInETH}">
             Buy Now
           </button>
