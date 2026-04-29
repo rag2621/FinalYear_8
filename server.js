@@ -108,7 +108,7 @@ function fallbackKeywords(prompt) {
   return result;
 }
 
-server.get('/home', (req, res) => {
+server.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 server.get('/search', (req, res) => {
