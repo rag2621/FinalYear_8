@@ -4,181 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maps of Major Indian Cities</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* ===== General Styles ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #C9A96E;
+            --gold-light: #E8D5B0;
+            --gold-dark: #A07840;
+            --bg: #0B0C0E;
+            --surface: #111318;
+            --surface2: #181B22;
+            --border: rgba(201,169,110,0.15);
+            --border-hover: rgba(201,169,110,0.35);
+            --text: #F0EDE8;
+            --muted: #888580;
+        }
+
         body {
-            font-family: "Segoe UI", Arial, sans-serif;
+            font-family: 'DM Sans', sans-serif;
             margin: 0;
-            background-color: #f4f6fa;
-            color: #333;
-            line-height: 1.6;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== Header ===== */
+        /* HEADER */
         header {
-            background: linear-gradient(135deg, #7f8792, #092138);
-            color: white;
-            padding: 50px 20px;
-            text-align: center;
             position: relative;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
         }
 
-        header h1 {
-            font-size: 2.4em;
-            margin: 0;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        header p {
-            font-size: 1.1em;
-            margin-top: 10px;
-            opacity: 0.9;
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 0;
+            opacity: 0.6;
         }
 
         header::after {
             content: "";
             position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 100px;
-            height: 4px;
-            background-color: #fff;
-            transform: translateX(-50%);
-            border-radius: 2px;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(11,12,14,0.55);
+            z-index: 1;
         }
 
-        /* ===== Navigation Bar ===== */
+        header h1 {
+            position: relative;
+            z-index: 2;
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--text);
+            background: rgba(11,12,14,0.5);
+            border: 1px solid var(--border);
+            padding: 12px 24px;
+            border-radius: 10px;
+        }
+
+        /* NAV */
         nav {
-            background-color: #003b8a;
+            background: rgba(17,19,24,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 20px;
-            padding: 12px 0;
+            gap: 6px;
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         nav a {
-            color: white;
+            color: var(--muted);
             text-decoration: none;
-            padding: 10px 18px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            transition: all 0.2s;
         }
 
         nav a:hover {
-            background-color: #005ce6;
+            color: var(--gold);
+            border-color: var(--border);
+            background: var(--surface2);
         }
 
-        /* ===== Main Section ===== */
+        /* MAIN */
         main {
-            padding: 30px;
-            max-width: 1000px;
+            padding: 2.5rem 1.5rem;
+            max-width: 900px;
             margin: 0 auto;
         }
 
         section {
-            background-color: white;
-            margin-bottom: 30px;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            padding: 2rem;
+            border-radius: 14px;
+            transition: border-color 0.2s;
         }
 
-        h1, h2 {
-            color: #004aad;
-        }
+        section:hover { border-color: var(--border-hover); }
 
         h2 {
-            border-bottom: 2px solid #004aad;
-            padding-bottom: 5px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 500;
+            color: var(--gold-light);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 10px;
+            margin-bottom: 1rem;
         }
 
-        /* ===== City Info Boxes ===== */
-        .city-facts {
-            background-color: #e8f0ff;
-            padding: 12px 15px;
-            border-left: 4px solid #004aad;
-            border-radius: 5px;
-            margin-top: 10px;
+        p {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 10px;
         }
+
+        ul { padding-left: 1.25rem; margin-top: 6px; }
+
+        ul li {
+            color: var(--muted);
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        ul li strong { color: var(--text); font-weight: 500; }
+
+        .city-facts {
+            background: rgba(201,169,110,0.06);
+            border-left: 3px solid var(--gold-dark);
+            padding: 12px 16px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 12px;
+        }
+
+        .city-facts strong { color: var(--gold-light); font-size: 14px; }
 
         .map-container {
-            margin-top: 15px;
-            border-radius: 8px;
+            margin-top: 1.25rem;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
         }
 
         .map-container iframe {
             width: 100%;
             height: 400px;
             border: none;
+            display: block;
+            filter: grayscale(20%) brightness(0.9);
         }
 
         footer {
-            background-color: #004aad;
-            color: white;
+            background: var(--surface);
+            border-top: 1px solid var(--border);
+            color: var(--muted);
             text-align: center;
-            padding: 12px 0;
-            font-size: 0.9em;
+            padding: 1.25rem;
+            font-size: 13px;
         }
 
-        /* ===== Responsive Design ===== */
         @media (max-width: 600px) {
-            nav {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            header h1 {
-                font-size: 1.8em;
-            }
-
-            .map-container iframe {
-                height: 300px;
-            }
+            nav { flex-direction: column; align-items: center; }
+            header h1 { font-size: 20px; }
+            .map-container iframe { height: 300px; }
         }
     </style>
 </head>
 <body>
-   <header>
-  <h1>Maps of Major Indian Cities</h1>
-  <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1762856549/HEADER2_oqbpht.jpg" alt="">
-</header>
 
-<style>
-  header {
-    position: relative;
-    width: 100%;
-    height: 250px; /* adjust as needed */
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-
-  header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-
-  header h1 {
-    position: relative;
-    z-index: 1;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-size: 28px;
-  }
-</style>
-
+    <header>
+        <h1>Maps of Major Indian Cities</h1>
+        <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1762856549/HEADER2_oqbpht.jpg" alt="">
+    </header>
 
     <nav>
         <a href="#delhi">Delhi</a>
@@ -192,12 +209,12 @@
     <main>
         <section id="overview">
             <h2>Overview</h2>
-            <p>India’s cities and states showcase a blend of heritage, progress, and natural beauty. From the bustling streets of Delhi and Mumbai to the serene hills of Himachal Pradesh, each region contributes uniquely to the nation’s diversity and charm. Explore the maps below to learn more about these fascinating places.</p>
+            <p>India's cities and states showcase a blend of heritage, progress, and natural beauty. From the bustling streets of Delhi and Mumbai to the serene hills of Himachal Pradesh, each region contributes uniquely to the nation's diversity and charm. Explore the maps below to learn more about these fascinating places.</p>
         </section>
 
         <section id="delhi">
             <h2>1. Delhi — The National Capital</h2>
-            <p>Delhi, India’s capital, is a living museum of history and modernity. It is home to government offices, iconic landmarks like the India Gate, and world-class educational institutions. Old Delhi’s narrow streets and New Delhi’s wide avenues define its unique charm.</p>
+            <p>Delhi, India's capital, is a living museum of history and modernity. It is home to government offices, iconic landmarks like the India Gate, and world-class educational institutions. Old Delhi's narrow streets and New Delhi's wide avenues define its unique charm.</p>
             <div class="city-facts">
                 <strong>Quick Facts:</strong>
                 <ul>
@@ -213,7 +230,7 @@
 
         <section id="mumbai">
             <h2>2. Mumbai — The Financial Capital</h2>
-            <p>Mumbai is India’s financial powerhouse and entertainment hub. Its fast-paced lifestyle is balanced by coastal beauty and cultural landmarks. It’s also home to the Gateway of India, Marine Drive, and Bollywood studios.</p>
+            <p>Mumbai is India's financial powerhouse and entertainment hub. Its fast-paced lifestyle is balanced by coastal beauty and cultural landmarks. It's also home to the Gateway of India, Marine Drive, and Bollywood studios.</p>
             <div class="city-facts">
                 <strong>Quick Facts:</strong>
                 <ul>
@@ -229,7 +246,7 @@
 
         <section id="bengaluru">
             <h2>3. Bengaluru — The IT Hub</h2>
-            <p>Bengaluru, the Silicon Valley of India, is a leader in innovation and technology. The city’s pleasant weather, gardens, and startup culture make it one of the most livable cities in India.</p>
+            <p>Bengaluru, the Silicon Valley of India, is a leader in innovation and technology. The city's pleasant weather, gardens, and startup culture make it one of the most livable cities in India.</p>
             <div class="city-facts">
                 <strong>Quick Facts:</strong>
                 <ul>
@@ -245,7 +262,7 @@
 
         <section id="chennai">
             <h2>4. Chennai — The Cultural Capital of South India</h2>
-            <p>Chennai is the soul of Tamil Nadu, known for its classical music, cuisine, and architecture. It’s also a major hub for the automobile and IT industries, located along the scenic Coromandel Coast.</p>
+            <p>Chennai is the soul of Tamil Nadu, known for its classical music, cuisine, and architecture. It's also a major hub for the automobile and IT industries, located along the scenic Coromandel Coast.</p>
             <div class="city-facts">
                 <strong>Quick Facts:</strong>
                 <ul>
@@ -261,7 +278,7 @@
 
         <section id="kolkata">
             <h2>5. Kolkata — The City of Joy</h2>
-            <p>Kolkata, the cultural heartbeat of India, is famous for its literature, art, and intellectual spirit. It’s a city where colonial heritage meets modern enthusiasm.</p>
+            <p>Kolkata, the cultural heartbeat of India, is famous for its literature, art, and intellectual spirit. It's a city where colonial heritage meets modern enthusiasm.</p>
             <div class="city-facts">
                 <strong>Quick Facts:</strong>
                 <ul>
@@ -277,7 +294,7 @@
 
         <section id="himachal">
             <h2>6. Himachal Pradesh — The Land of Hills</h2>
-            <p>Himachal Pradesh, located in the lap of the Himalayas, is known for its stunning mountains, rivers, and valleys. From Shimla and Manali to Dharamshala, it’s a paradise for nature lovers and adventure seekers.</p>
+            <p>Himachal Pradesh, located in the lap of the Himalayas, is known for its stunning mountains, rivers, and valleys. From Shimla and Manali to Dharamshala, it's a paradise for nature lovers and adventure seekers.</p>
             <div class="city-facts">
                 <strong>Quick Facts:</strong>
                 <ul>
@@ -293,12 +310,13 @@
 
         <section id="conclusion">
             <h2>Conclusion</h2>
-            <p>From the modern skylines of Bengaluru to the serene valleys of Himachal Pradesh, every region of India has its own charm. Use these maps to explore cities and landscapes that showcase India’s unmatched diversity and spirit.</p>
+            <p>From the modern skylines of Bengaluru to the serene valleys of Himachal Pradesh, every region of India has its own charm. Use these maps to explore cities and landscapes that showcase India's unmatched diversity and spirit.</p>
         </section>
     </main>
 
     <footer>
         <p>&copy; 2025 India Map Explorer | For educational and informational purposes only.</p>
     </footer>
+
 </body>
 </html>

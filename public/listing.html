@@ -4,46 +4,293 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>List Property</title>
-    <link rel="stylesheet" href="/style1.css">
-    
-    <!-- Add Web3.js for Sepolia integration -->
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        .wallet-warning {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            font-size: 14px;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold: #C9A96E;
+            --gold-light: #E8D5B0;
+            --gold-dark: #A07840;
+            --bg: #0B0C0E;
+            --surface: #111318;
+            --surface2: #181B22;
+            --border: rgba(201,169,110,0.15);
+            --border-hover: rgba(201,169,110,0.35);
+            --text: #F0EDE8;
+            --muted: #888580;
+            --danger: #E05C5C;
+            --success: #4CAF82;
         }
+
+        html, body {
+            min-height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 500px;
+            background: radial-gradient(ellipse, rgba(201,169,110,0.06) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 480px;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 0.6s ease both;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 1.75rem;
+            text-align: center;
+        }
+
+        .wallet-warning {
+            background: rgba(201,169,110,0.08);
+            border: 1px solid rgba(201,169,110,0.3);
+            color: var(--gold);
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 13px;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .input {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+            -webkit-appearance: none;
+        }
+
+        .input::placeholder { color: #4a4845; }
+        .input:focus { border-color: var(--gold-dark); background: #1a1d25; }
 
         .eth-price-info {
             font-size: 12px;
-            color: #666;
-            margin-top: 5px;
+            color: var(--gold-dark);
+            margin-top: -6px;
+        }
+
+        /* Checkboxes */
+        .features-box {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+
+        .features-label {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 9px 12px;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--border-hover);
+            background: #141720;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--border-hover);
+            border-radius: 4px;
+            background: var(--surface2);
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked {
+            background: var(--gold);
+            border-color: var(--gold);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 5px;
+            height: 9px;
+            border: 2px solid #0B0C0E;
+            border-top: none;
+            border-left: none;
+            transform: rotate(45deg);
+        }
+
+        .checkbox-item span {
+            font-size: 13px;
+            color: var(--muted);
+            transition: color 0.2s;
+        }
+
+        .checkbox-item:has(input:checked) {
+            border-color: var(--border-hover);
+            background: rgba(201,169,110,0.06);
+        }
+
+        .checkbox-item:has(input:checked) span {
+            color: var(--gold-light);
         }
 
         .blockchain-info {
-            margin-top: 20px;
-            background: #f8f9ff;
-            border: 1px solid #cdd4ff;
+            background: var(--surface2);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            padding: 10px 15px;
+            padding: 14px;
         }
 
         .blockchain-info h4 {
-            color: #003399;
-            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
         }
 
         .blockchain-info p {
-            font-size: 13px;
-            color: #333;
+            font-size: 12px;
+            color: var(--muted);
             margin: 3px 0;
+            word-break: break-all;
         }
+
+        .blockchain-info p b { color: var(--text); font-weight: 500; }
+
+        #general-error {
+            background: rgba(224,92,92,0.08);
+            border: 1px solid rgba(224,92,92,0.25);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--danger);
+            display: none;
+        }
+
+        #success-message {
+            background: rgba(76,175,130,0.08);
+            border: 1px solid rgba(76,175,130,0.25);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--success);
+            display: none;
+        }
+
+        .login-button {
+            width: 100%;
+            background: var(--gold);
+            color: #0B0C0E;
+            border: none;
+            border-radius: 10px;
+            padding: 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.15s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-button:hover { background: var(--gold-light); }
+        .login-button:active { transform: scale(0.98); }
+        .login-button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .login-button::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .agreement {
+            display: block;
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .agreement a { color: var(--gold-dark); text-decoration: none; }
+        .agreement a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -60,18 +307,38 @@
             <input required class="input" type="text" id="location" placeholder="Location (e.g., Chandigarh, Sector 17)">
             <input required class="input" type="number" step="0.001" id="priceETH" placeholder="Price (in ETH)">
             <div class="eth-price-info" id="ethPriceInfo"></div>
-
-            <div class="blockchain-info">
-                <h4>Blockchain Details (Hardcoded)</h4>
-                <p><b>Network:</b> Ethereum Mainnet</p>
-                <p><b>Contract Address:</b> 0xAbCdEf1234567890aBCDEF9876543210ABcDef12</p>
-                <p><b>Owner Address:</b> 0x742d35Cc6634C0532925a3b844Bc454e4438f44e</p>
-                <p><b>Transaction Hash:</b> 0x9f5e1d87c94b2173e0b8a05a94680e72c4d573123f44344e8f2c25ef54a5b9f7</p>
-                <p><b>Token:</b> ETH</p>
+            <div class="features-box">
+                <span class="features-label">Property Features</span>
+                <div class="features-grid">
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="school">
+                        <span>🏫 Near School</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="hospital">
+                        <span>🏥 Near Hospital</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="peaceful">
+                        <span>🌿 Peaceful Area</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="luxury">
+                        <span>💎 Luxury</span>
+                    </label>
+                </div>
             </div>
 
-            <span id="general-error" style="color: red; font-size: 12px; display: none;"></span>
-            <span id="success-message" style="color: green; font-size: 12px; display: none;"></span>
+            <div class="blockchain-info">
+                <h4>Blockchain Details</h4>
+                <p><b>Network:</b> Sepolia Testnet</p>
+                <p><b>Contract Address:</b> 0x8FE5DD5b58C59156c2EE49CD446b3C1E300f6d0d</p>
+                <p><b>Token:</b> SepoliaETH</p>
+                <p><b>Tx Hash:</b> Generated after listing</p>
+            </div>
+
+            <span id="general-error"></span>
+            <span id="success-message"></span>
             <input class="login-button" type="submit" value="List Property" id="submitBtn">
         </form>
         <span class="agreement"><a href="#">Learn property listing policy</a></span>
@@ -84,20 +351,11 @@
         const submitBtn = document.getElementById('submitBtn');
         const ethPriceInfo = document.getElementById('ethPriceInfo');
 
-        // ETH to INR conversion rate (example)
         const ethToINR = 200000;
 
-        // ==================== SEPOLIA SMART CONTRACT CONFIGURATION (COMMENTED OUT) ====================
-        /*
-        // Sepolia Testnet Configuration
-        const SEPOLIA_CHAIN_ID = '0xaa36a7'; // 11155111 in decimal
-        const SEPOLIA_RPC_URL = 'https://sepolia.infura.io/v3/YOUR-INFURA-PROJECT-ID'; // Replace with your Infura ID
-        
-        // Your deployed smart contract address on Sepolia
-        const CONTRACT_ADDRESS = '0xYourContractAddressHere'; // Replace with your actual contract address
-        
-        // Smart Contract ABI (Application Binary Interface)
-        // This should match your deployed contract's ABI
+        // ==================== SEPOLIA SMART CONTRACT CONFIGURATION (ACTIVE) ====================
+        const SEPOLIA_CHAIN_ID = '0xaa36a7';
+        const CONTRACT_ADDRESS = '0x6aA426B160Ebb2a52a1F32d19341480192D5d7d7';
         const CONTRACT_ABI = [
             {
                 "inputs": [
@@ -105,115 +363,70 @@
                     {"internalType": "string", "name": "_location", "type": "string"},
                     {"internalType": "uint256", "name": "_price", "type": "uint256"}
                 ],
-                "name": "listProperty",
-                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "name": "addProperty",
+                "outputs": [],
                 "stateMutability": "nonpayable",
                 "type": "function"
             },
             {
-                "anonymous": false,
-                "inputs": [
-                    {"indexed": true, "internalType": "uint256", "name": "propertyId", "type": "uint256"},
-                    {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
-                    {"indexed": false, "internalType": "string", "name": "name", "type": "string"},
-                    {"indexed": false, "internalType": "uint256", "name": "price", "type": "uint256"}
-                ],
-                "name": "PropertyListed",
-                "type": "event"
+                "inputs": [{"internalType": "uint256", "name": "_propertyId", "type": "uint256"}],
+                "name": "buyProperty",
+                "outputs": [],
+                "stateMutability": "payable",
+                "type": "function"
+            },
+            {
+                "inputs": [],
+                "name": "propertyCount",
+                "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+                "stateMutability": "view",
+                "type": "function"
             }
         ];
 
-        // Check if user is on Sepolia network
         async function checkSepoliaNetwork() {
-            if (typeof window.ethereum === 'undefined') {
-                throw new Error('MetaMask not installed!');
-            }
-
+            if (typeof window.ethereum === 'undefined') throw new Error('MetaMask not installed!');
             const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-            
             if (chainId !== SEPOLIA_CHAIN_ID) {
-                // Request to switch to Sepolia
                 try {
-                    await window.ethereum.request({
-                        method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: SEPOLIA_CHAIN_ID }],
-                    });
+                    await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: SEPOLIA_CHAIN_ID }] });
                 } catch (switchError) {
-                    // If Sepolia is not added, add it
                     if (switchError.code === 4902) {
                         await window.ethereum.request({
                             method: 'wallet_addEthereumChain',
-                            params: [{
-                                chainId: SEPOLIA_CHAIN_ID,
-                                chainName: 'Sepolia Test Network',
-                                nativeCurrency: {
-                                    name: 'Sepolia ETH',
-                                    symbol: 'SepoliaETH',
-                                    decimals: 18
-                                },
-                                rpcUrls: [SEPOLIA_RPC_URL],
-                                blockExplorerUrls: ['https://sepolia.etherscan.io']
-                            }]
+                            params: [{ chainId: SEPOLIA_CHAIN_ID, chainName: 'Sepolia Test Network', nativeCurrency: { name: 'Sepolia ETH', symbol: 'SepoliaETH', decimals: 18 }, rpcUrls: ['https://rpc.sepolia.org'], blockExplorerUrls: ['https://sepolia.etherscan.io'] }]
                         });
-                    } else {
-                        throw switchError;
-                    }
+                    } else { throw switchError; }
                 }
             }
         }
 
-        // Interact with Sepolia Smart Contract
         async function listPropertyOnBlockchain(propertyName, location, priceInETH) {
-            try {
-                // Check network
-                await checkSepoliaNetwork();
+            await checkSepoliaNetwork();
+            const { ethers } = window;
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const userAddress = await signer.getAddress();
+            const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+            const priceInWei = ethers.utils.parseEther(priceInETH.toString());
+            const tx = await contract.addProperty(propertyName, location, priceInWei);
+            const receipt = await tx.wait();
 
-                // Get Web3 instance
-                const web3 = new Web3(window.ethereum);
-                
-                // Get user's account
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const userAddress = accounts[0];
+            // Real property ID from contract
+            const count = await contract.propertyCount();
 
-                // Create contract instance
-                const contract = new web3.eth.Contract(CONTRACT_ABI, CONTRACT_ADDRESS);
-
-                // Convert ETH to Wei (1 ETH = 10^18 Wei)
-                const priceInWei = web3.utils.toWei(priceInETH.toString(), 'ether');
-
-                // Call smart contract function
-                const gasEstimate = await contract.methods
-                    .listProperty(propertyName, location, priceInWei)
-                    .estimateGas({ from: userAddress });
-
-                // Send transaction
-                const receipt = await contract.methods
-                    .listProperty(propertyName, location, priceInWei)
-                    .send({ 
-                        from: userAddress,
-                        gas: Math.floor(gasEstimate * 1.2) // Add 20% buffer
-                    });
-
-                // Return blockchain details
-                return {
-                    owner: userAddress,
-                    blockchainTx: receipt.transactionHash,
-                    contractAddress: CONTRACT_ADDRESS,
-                    network: "Sepolia Testnet",
-                    tokenSymbol: "SepoliaETH",
-                    blockNumber: receipt.blockNumber,
-                    gasUsed: receipt.gasUsed
-                };
-
-            } catch (error) {
-                console.error('Blockchain error:', error);
-                throw new Error('Failed to list property on blockchain: ' + error.message);
-            }
+            return {
+                owner: userAddress,
+                blockchainTx: receipt.transactionHash,
+                contractAddress: CONTRACT_ADDRESS,
+                network: "Sepolia Testnet",
+                tokenSymbol: "SepoliaETH",
+                blockchainPropertyId: count.toString()
+            };
         }
-        */
-        // ==================== END OF SEPOLIA CODE (COMMENTED OUT) ====================
+        // ==================== END OF SEPOLIA CODE ====================
 
-        // Show approximate INR value
         document.getElementById('priceETH').addEventListener('input', (e) => {
             const ethAmount = parseFloat(e.target.value);
             if (ethAmount && ethAmount > 0) {
@@ -224,8 +437,10 @@
             }
         });
 
-        // Handle form submission
         form.addEventListener('submit', async function(e) {
+            const selectedAmenities = Array.from(
+                document.querySelectorAll('input[type="checkbox"]:checked')
+            ).map(cb => cb.value);
             e.preventDefault();
 
             generalError.style.display = 'none';
@@ -253,33 +468,22 @@
                 submitBtn.disabled = true;
                 submitBtn.value = 'Listing...';
 
-                // ==================== OPTION 1: HARDCODED (ACTIVE) ====================
-                // Hardcoded blockchain details
-                const blockchainDetails = {
-                    owner: "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
-                    blockchainTx: "0x9f5e1d87c94b2173e0b8a05a94680e72c4d573123f44344e8f2c25ef54a5b9f7",
-                    contractAddress: "0xAbCdEf1234567890aBCDEF9876543210ABcDef12",
-                    network: "Ethereum Mainnet",
-                    tokenSymbol: "ETH",
-                };
-
-                // ==================== OPTION 2: SEPOLIA SMART CONTRACT (COMMENTED OUT) ====================
-                /*
-                // Uncomment this block to use Sepolia smart contract
+                // ==================== SEPOLIA SMART CONTRACT (ACTIVE) ====================
                 submitBtn.value = 'Connecting to Blockchain...';
-                
-                // List property on Sepolia blockchain
-                const blockchainDetails = await listPropertyOnBlockchain(
-                    propertyName, 
-                    location, 
-                    parseFloat(priceETH)
-                );
-                
+                const liveDetails = await listPropertyOnBlockchain(propertyName, location, parseFloat(priceETH));
                 submitBtn.value = 'Saving to Database...';
-                */
-                // ==================== END OF SEPOLIA OPTION ====================
 
-                // Save to database
+                // Testing fix: dummy owner so same wallet can buy
+                const blockchainDetails = {
+                    owner: "0x000000000000000000000000000000000000dEaD",
+                    blockchainTx: liveDetails.blockchainTx,
+                    contractAddress: liveDetails.contractAddress,
+                    network: liveDetails.network,
+                    tokenSymbol: liveDetails.tokenSymbol,
+                    blockchainPropertyId: liveDetails.blockchainPropertyId
+                };
+                // ==================== END ====================
+
                 const response = await fetch('/list', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -288,11 +492,13 @@
                         city: location,
                         price: parseFloat(priceETH) * ethToINR,
                         priceInETH: parseFloat(priceETH),
+                        amenities: selectedAmenities,
                         owner: blockchainDetails.owner,
                         email: userEmail || "demo@blockproperty.io",
                         blockchainTx: blockchainDetails.blockchainTx,
                         contractAddress: blockchainDetails.contractAddress,
                         network: blockchainDetails.network,
+                        blockchainPropertyId: blockchainDetails.blockchainPropertyId,
                         isSold: false,
                         listedAt: new Date().toISOString(),
                     })

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D5B0;
+      --gold-dark: #A07840;
+      --bg: #0B0C0E;
+      --surface: #111318;
+      --surface2: #181B22;
+      --border: rgba(201,169,110,0.15);
+      --border-hover: rgba(201,169,110,0.35);
+      --text: #F0EDE8;
+      --muted: #888580;
+      --danger: #E05C5C;
+      --success: #4CAF82;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      background: rgba(17,19,24,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    #userDisplay {
+      font-size: 13px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+    }
+
+    .search-banner {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 2rem;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search-banner .keywords {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--muted);
+    }
+
+    .keyword-badge {
+      background: rgba(201,169,110,0.12);
+      border: 1px solid var(--border-hover);
+      color: var(--gold);
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--border-hover);
+      color: var(--gold);
+      padding: 5px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--surface2);
+    }
+
+    .network-warning {
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.3);
+      color: var(--gold);
+      padding: 14px 20px;
+      text-align: center;
+      margin: 1.5rem 2rem 0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .results-count {
+      text-align: center;
+      padding: 1.5rem 0 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .property-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 2.5rem 1.5rem;
+      gap: 1.5rem;
+    }
+
+    .property-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 260px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .property-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+    }
+
+    .property-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      opacity: 0.85;
+    }
+
+    .property-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text);
+      margin: 14px 14px 6px;
+    }
+
+    .property-card p {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 3px 14px;
+    }
+
+    .property-card p:nth-child(4) {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: var(--gold);
+    }
+
+    .amenity-tag {
+      display: inline-block;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 2px 8px;
+      font-size: 11px;
+      margin: 2px;
+    }
+
+    .buy-btn {
+      display: block;
+      width: calc(100% - 28px);
+      margin: 14px;
+      background: var(--gold);
+      color: #0B0C0E;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 9px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    .buy-btn:hover { background: var(--gold-light); }
+    .buy-btn:active { transform: scale(0.98); }
+
+    .buy-btn:disabled {
+      background: var(--surface2);
+      color: var(--muted);
+      cursor: not-allowed;
+      border: 1px solid var(--border);
+    }
+
+    .empty-msg {
+      text-align: center;
+      margin-top: 4rem;
+      font-size: 16px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-logo">🏡 <span>Block</span>Property</div>
+    <div id="userDisplay"></div>
+  </nav>
+
+  <div class="search-banner" id="searchBanner" style="display: none;">
+    <div class="keywords">
+      🔍 <span>AI matched keywords:</span>
+      <span id="keywordBadges"></span>
+    </div>
+    <button class="clear-btn" onclick="clearAndGoBack()">✖ Show All Properties</button>
+  </div>
+
+  <div id="networkWarning" class="network-warning" style="display: none;"></div>
+  <div class="results-count" id="resultsCount"></div>
+  <div id="property-container" class="property-container"></div>
+  <p id="emptyMsg" class="empty-msg"></p>
+
+  <script>
+    const SEPOLIA_CHAIN_ID = '0xaa36a7';
+    const CONTRACT_ADDRESS = '0x4a72c52bad1d4ecbae77887022c79a51629fe489';
+    
+    const CONTRACT_ABI = [
+      {
+        "inputs": [{"internalType": "string","name": "_name","type": "string"},{"internalType": "string","name": "_location","type": "string"},{"internalType": "uint256","name": "_price","type": "uint256"}],
+        "name": "addProperty",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [{"internalType": "uint256","name": "_propertyId","type": "uint256"}],
+        "name": "buyProperty",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [{"indexed": false,"internalType": "uint256","name": "propertyId","type": "uint256"},{"indexed": false,"internalType": "string","name": "name","type": "string"},{"indexed": false,"internalType": "uint256","name": "price","type": "uint256"},{"indexed": false,"internalType": "address","name": "owner","type": "address"}],
+        "name": "PropertyAdded",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [{"indexed": false,"internalType": "uint256","name": "propertyId","type": "uint256"},{"indexed": false,"internalType": "address","name": "oldOwner","type": "address"},{"indexed": false,"internalType": "address","name": "newOwner","type": "address"},{"indexed": false,"internalType": "uint256","name": "price","type": "uint256"}],
+        "name": "PropertySold",
+        "type": "event"
+      },
+      {
+        "inputs": [{"internalType": "uint256","name": "_propertyId","type": "uint256"}],
+        "name": "getProperty",
+        "outputs": [{"internalType": "string","name": "","type": "string"},{"internalType": "string","name": "","type": "string"},{"internalType": "uint256","name": "","type": "uint256"},{"internalType": "address","name": "","type": "address"},{"internalType": "bool","name": "","type": "bool"}],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+        "name": "properties",
+        "outputs": [{"internalType": "uint256","name": "id","type": "uint256"},{"internalType": "string","name": "name","type": "string"},{"internalType": "string","name": "location","type": "string"},{"internalType": "uint256","name": "price","type": "uint256"},{"internalType": "address payable","name": "owner","type": "address"},{"internalType": "bool","name": "isSold","type": "bool"}],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "propertyCount",
+        "outputs": [{"internalType": "uint256","name": "","type": "uint256"}],
+        "stateMutability": "view",
+        "type": "function"
+      }
+    ];
+
+    function clearAndGoBack() {
+      sessionStorage.removeItem('searchResults');
+      sessionStorage.removeItem('searchKeywords');
+      window.location.href = '/buy';
+    }
+
+    async function checkNetwork() {
+      if (!window.ethereum) {
+        document.getElementById('networkWarning').textContent = '⚠️ MetaMask not detected! Please install MetaMask.';
+        document.getElementById('networkWarning').style.display = 'block';
+        return false;
+      }
+
+      const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+      
+      if (chainId !== SEPOLIA_CHAIN_ID) {
+        document.getElementById('networkWarning').innerHTML = `
+          ⚠️ Wrong Network! Please switch to <strong>Sepolia Test Network</strong> in MetaMask.
+          <br>Current: ${chainId} | Required: Sepolia (${SEPOLIA_CHAIN_ID})
+        `;
+        document.getElementById('networkWarning').style.display = 'block';
+        
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: SEPOLIA_CHAIN_ID }],
+          });
+          document.getElementById('networkWarning').style.display = 'none';
+          return true;
+        } catch (switchError) {
+          console.error('Failed to switch network:', switchError);
+          return false;
+        }
+      }
+      
+      return true;
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const userEmail = localStorage.getItem("user");
+      const walletAddress = localStorage.getItem("walletAddress");
+      const container = document.getElementById("property-container");
+      const emptyMsg = document.getElementById("emptyMsg");
+      const userDisplay = document.getElementById("userDisplay");
+
+      if (!userEmail || !walletAddress) {
+        alert("Please log in and connect your wallet first!");
+        window.location.href = "/login";
+        return;
+      }
+
+      userDisplay.textContent = `👤 ${userEmail} | 💳 ${walletAddress.slice(0,6)}...${walletAddress.slice(-4)}`;
+      await checkNetwork();
+
+      if (window.ethereum) {
+        window.ethereum.on('chainChanged', () => window.location.reload());
+      }
+
+      const rawResults = sessionStorage.getItem('searchResults');
+      const rawKeywords = sessionStorage.getItem('searchKeywords');
+
+      /*if (!rawResults) {
+        window.location.href = '/buy';
+        return;
+      }*/
+
+      const listings = JSON.parse(rawResults);
+      const keywords = rawKeywords ? JSON.parse(rawKeywords) : [];
+
+      if (keywords.length > 0) {
+        document.getElementById('searchBanner').style.display = 'flex';
+        document.getElementById('keywordBadges').innerHTML = keywords
+          .map(k => `<span class="keyword-badge">${k}</span>`)
+          .join('');
+      }
+
+      if (!listings || listings.length === 0) {
+        emptyMsg.textContent = "No properties matched your search.";
+        return;
+      }
+
+      document.getElementById('resultsCount').textContent = `${listings.length} propert${listings.length === 1 ? 'y' : 'ies'} found`;
+
+      listings.forEach((p, index) => {
+        const card = document.createElement("div");
+        card.classList.add("property-card");
+        card.innerHTML = `
+          <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1744403976/uploads/1000116213.jpg" alt="${p.Name}">
+          <h3>${p.Name}</h3>
+          <p>📍 ${p.city}</p>
+          <p>💰 Price: ₹${p.price?.toLocaleString('en-IN')}</p>
+          <p>Ξ ${p.priceInETH} ETH</p>
+          <div style="margin: 6px 14px;">
+            ${(p.amenities || []).map(a => `<span class="amenity-tag">${a}</span>`).join('')}
+          </div>
+          <p style="font-size: 11px; color: var(--muted); margin: 4px 14px;">Property ID: ${index + 1}</p>
+          <button class="buy-btn" 
+                  data-id="${p._id}" 
+                  data-property-id="${index + 1}"
+                  data-eth="${p.priceInETH}">
+            Buy Now
+          </button>
+        `;
+        container.appendChild(card);
+      });
+
+      container.addEventListener("click", async (e) => {
+        if (e.target.classList.contains("buy-btn")) {
+          const dbPropertyId = e.target.getAttribute("data-id");
+          const blockchainPropertyId = e.target.getAttribute("data-property-id");
+          const priceInETH = e.target.getAttribute("data-eth");
+          const button = e.target;
+
+          if (!window.ethereum) {
+            alert("❌ MetaMask not detected! Please install MetaMask extension.");
+            window.open("https://metamask.io/download/", "_blank");
+            return;
+          }
+
+          const isCorrectNetwork = await checkNetwork();
+          if (!isCorrectNetwork) {
+            alert("⚠️ Please switch to Sepolia Test Network in MetaMask!");
+            return;
+          }
+
+          const confirmBuy = confirm(
+            `🏠 Buy this property for ${priceInETH} ETH?\n\n` +
+            `Property ID: ${blockchainPropertyId}\n` +
+            `Network: Sepolia Testnet\n` +
+            `Contract: ${CONTRACT_ADDRESS}\n\n` +
+            `⚠️ Make sure you have enough Sepolia ETH + gas fees!`
+          );
+          
+          if (!confirmBuy) return;
+
+          try {
+            button.disabled = true;
+            button.textContent = 'Processing...';
+
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = provider.getSigner();
+            const buyerAddress = await signer.getAddress();
+
+            const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+            const priceInWei = ethers.utils.parseEther(priceInETH);
+
+            button.textContent = 'Confirm in MetaMask...';
+
+            const tx = await contract.buyProperty(blockchainPropertyId, {
+              value: priceInWei,
+              gasLimit: 300000
+            });
+
+            button.textContent = 'Waiting for confirmation...';
+            alert(`📤 Transaction sent!\n\nHash: ${tx.hash}\n\nWaiting for confirmation...`);
+
+            const receipt = await tx.wait();
+            button.textContent = 'Updating database...';
+
+            const dbRes = await fetch(`/buy/${dbPropertyId}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                buyerWallet: buyerAddress,
+                buyerEmail: userEmail,
+                blockchainTx: receipt.transactionHash,
+                blockNumber: receipt.blockNumber,
+                gasUsed: receipt.gasUsed.toString(),
+                propertyId: blockchainPropertyId
+              })
+            });
+
+            const result = await dbRes.json();
+            
+            if (result.success) {
+              alert(
+                `✅ Purchase Complete!\n\n` +
+                `Transaction Hash: ${receipt.transactionHash}\n` +
+                `Block Number: ${receipt.blockNumber}\n` +
+                `Gas Used: ${receipt.gasUsed.toString()}\n\n` +
+                `View on Sepolia Etherscan:\n` +
+                `https://sepolia.etherscan.io/tx/${receipt.transactionHash}`
+              );
+              
+              window.open(`https://sepolia.etherscan.io/tx/${receipt.transactionHash}`, '_blank');
+              setTimeout(() => location.reload(), 2000);
+            } else {
+              alert("⚠️ Blockchain transaction succeeded but database update failed: " + result.message);
+            }
+
+          } catch (err) {
+            console.error("Transaction failed:", err);
+            
+            let errorMsg = "⚠️ Transaction failed!\n\n";
+            
+            if (err.code === 4001) {
+              errorMsg += "You rejected the transaction.";
+            } else if (err.code === -32603) {
+              errorMsg += "Insufficient funds or gas limit too low.";
+            } else if (err.message.includes("insufficient funds")) {
+              errorMsg += "Insufficient Sepolia ETH balance.\n\nGet free Sepolia ETH from:\nhttps://faucet.quicknode.com/ethereum/sepolia";
+            } else {
+              errorMsg += err.message || "Unknown error occurred.";
+            }
+            
+            alert(errorMsg);
+            button.disabled = false;
+            button.textContent = 'Buy Now';
+          }
+        }
+      });
+    });
+  </script>
+</body>
+</html>

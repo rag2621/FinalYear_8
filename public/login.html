@@ -3,22 +3,387 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Page</title>
-  <link rel="stylesheet" href="/style1.css" />
+  <title>Login — Block Property</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D5B0;
+      --gold-dark: #A07840;
+      --bg: #0B0C0E;
+      --surface: #111318;
+      --surface2: #181B22;
+      --border: rgba(201,169,110,0.15);
+      --border-hover: rgba(201,169,110,0.35);
+      --text: #F0EDE8;
+      --muted: #888580;
+      --danger: #E05C5C;
+      --success: #4CAF82;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(55,80,130,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 960px;
+      min-height: 560px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Left panel */
+    .panel-left {
+      flex: 1.1;
+      background: linear-gradient(145deg, #141820 0%, #0D0F14 100%);
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid var(--border);
+    }
+
+    .panel-left::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.3;
+    }
+
+    .brand { position: relative; z-index: 1; }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg { width: 18px; height: 18px; }
+
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .panel-headline { position: relative; z-index: 1; }
+
+    .panel-headline h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 38px);
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .panel-headline h1 em { font-style: normal; color: var(--gold); }
+
+    .panel-headline p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    /* Right panel */
+    .panel-right {
+      flex: 1;
+      background: var(--surface);
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header { margin-bottom: 2rem; }
+
+    .form-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-header p { font-size: 13px; color: var(--muted); }
+
+    .form-header p a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .form-header p a:hover { opacity: 0.7; }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input::placeholder { color: #4a4845; }
+
+    .form-group input:focus {
+      border-color: var(--gold-dark);
+      background: #1a1d25;
+    }
+
+    .general-error {
+      background: rgba(224,92,92,0.08);
+      border: 1px solid rgba(224,92,92,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--danger);
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .success-msg {
+      background: rgba(76,175,130,0.08);
+      border: 1px solid rgba(76,175,130,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--success);
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #0B0C0E;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s, transform 0.15s, opacity 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover { background: var(--gold-light); }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .form-footer {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .divider-line { flex: 1; height: 1px; background: var(--border); }
+
+    .form-footer-text {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .register-text {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 1.25rem;
+    }
+
+    .register-text a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+
+    .register-text a:hover { opacity: 0.7; }
+
+    @media (max-width: 720px) {
+      .panel-left { display: none; }
+      .page-wrapper { max-width: 440px; border-radius: 16px; }
+      .panel-right { padding: 2.5rem 1.75rem; }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <div class="heading">Food Book</div>
-    <form class="form" id="loginForm">
-      <input required class="input" type="email" id="email" placeholder="E-mail" />
-      <input required class="input" type="password" id="password" placeholder="Password" />
-      <span id="general-error" style="color: red; font-size: 12px; display: none;"></span>
-      <span id="success-message" style="color: green; font-size: 12px; display: none;"></span>
-      <input class="login-button" type="submit" value="Login" id="submitBtn" />
-    </form>
-    <span class="agreement">
-      Don't have an account? <a href="/registrations">Register here</a>
-    </span>
+
+  <div class="page-wrapper">
+
+    <!-- LEFT PANEL -->
+    <div class="panel-left">
+      <div class="brand">
+        <div class="brand-logo">
+          <div class="brand-icon">
+            <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="8" width="6" height="8" rx="1" fill="#C9A96E"/>
+              <rect x="10" y="4" width="6" height="12" rx="1" fill="#C9A96E" opacity="0.6"/>
+              <rect x="5" y="2" width="8" height="5" rx="1" fill="#C9A96E" opacity="0.35"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name">Block Property</div>
+            <div class="brand-tagline">Powered by AI</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-headline">
+        <h1>Welcome<br>back to your<br><em>property hub.</em></h1>
+        <p>Sign in to continue exploring AI-powered listings, verified properties, and blockchain-backed transactions.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel-right">
+      <div class="form-header">
+        <h2>Sign in</h2>
+        <p>Don't have an account? <a href="/registrations">Register here →</a></p>
+      </div>
+
+      <div class="general-error" id="general-error"></div>
+      <div class="success-msg" id="success-message"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Your password" required />
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Sign In</button>
+      </form>
+
+      <div class="form-footer">
+        <div class="divider-line"></div>
+        <span class="form-footer-text">Secure &amp; Encrypted</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="register-text">New to Block Property? <a href="/registrations">Create an account →</a></p>
+    </div>
+
   </div>
 
   <script>
@@ -31,8 +396,6 @@
 
     form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      console.log('Login form submission triggered');
-
       generalError.style.display = 'none';
       successMessage.style.display = 'none';
 
@@ -42,14 +405,14 @@
       };
 
       if (!formData.email || !formData.password) {
-        generalError.textContent = 'Please enter both email and password';
+        generalError.textContent = 'Please enter both email and password.';
         generalError.style.display = 'block';
         return;
       }
 
       try {
         submitBtn.disabled = true;
-        submitBtn.value = 'Logging in...';
+        submitBtn.textContent = 'Signing in…';
 
         const response = await fetch('/verify', {
           method: 'POST',
@@ -60,32 +423,26 @@
         const data = await response.json();
 
         if (response.ok) {
-          successMessage.textContent = 'Login successful!';
+          successMessage.textContent = 'Login successful! Redirecting…';
           successMessage.style.display = 'block';
-
-           localStorage.setItem('isLogin', 'true');
+          localStorage.setItem('isLogin', 'true');
           localStorage.setItem('user', email.value.trim());
-
-          setTimeout(() => {
-            window.location.href = '/';
-          }, 1000);
-
+          setTimeout(() => { window.location.href = '/'; }, 1000);
           form.reset();
         } else {
           generalError.textContent = data.message || 'Invalid credentials. Please try again.';
           generalError.style.display = 'block';
         }
       } catch (error) {
-        console.error('Login error:', error);
         generalError.textContent = 'Network error. Please try again later.';
         generalError.style.display = 'block';
       } finally {
         submitBtn.disabled = false;
-        submitBtn.value = 'Login';
+        submitBtn.textContent = 'Sign In';
       }
     });
 
-    form.querySelectorAll('.input').forEach((input) => {
+    form.querySelectorAll('input').forEach((input) => {
       input.addEventListener('input', () => {
         generalError.style.display = 'none';
       });

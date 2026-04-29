@@ -1,143 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration Page</title>
-    <link rel="stylesheet" href="/style1.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register — Block Property</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style1.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D5B0;
+      --gold-dark: #A07840;
+      --bg: #0B0C0E;
+      --surface: #111318;
+      --surface2: #181B22;
+      --border: rgba(201,169,110,0.15);
+      --border-hover: rgba(201,169,110,0.35);
+      --text: #F0EDE8;
+      --muted: #888580;
+      --danger: #E05C5C;
+      --success: #4CAF82;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(201,169,110,0.06) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(55, 80, 130, 0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Layout split */
+    .page-wrapper {
+      display: flex;
+      width: 100%;
+      max-width: 960px;
+      min-height: 600px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.6s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Left panel */
+    .panel-left {
+      flex: 1.1;
+      background: linear-gradient(145deg, #141820 0%, #0D0F14 100%);
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid var(--border);
+    }
+
+    .panel-left::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.3;
+    }
+
+    .brand {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 2.5rem;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border: 1.5px solid var(--gold);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+
+    .brand-tagline {
+      font-size: 11px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .panel-headline {
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-headline h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 3vw, 38px);
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .panel-headline h1 em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .panel-headline p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .panel-stats {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .stat {
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--gold-light);
+      font-weight: 500;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    /* Right panel - form */
+    .panel-right {
+      flex: 1;
+      background: var(--surface);
+      padding: 3.5rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-header {
+      margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .form-header p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .form-header p a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .form-header p a:hover { opacity: 0.7; }
+
+    .form-group {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .form-group input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .form-group input::placeholder { color: #4a4845; }
+
+    .form-group input:focus {
+      border-color: var(--gold-dark);
+      background: #1a1d25;
+    }
+
+    .form-group input.error-field {
+      border-color: var(--danger);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .error-text {
+      font-size: 11px;
+      color: var(--danger);
+      margin-top: 5px;
+      display: none;
+    }
+
+    .general-error {
+      background: rgba(224,92,92,0.08);
+      border: 1px solid rgba(224,92,92,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--danger);
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .success-msg {
+      background: rgba(76,175,130,0.08);
+      border: 1px solid rgba(76,175,130,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--success);
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #0B0C0E;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s, transform 0.15s, opacity 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .submit-btn:hover {
+      background: var(--gold-light);
+    }
+
+    .submit-btn:active {
+      transform: scale(0.98);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .submit-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .form-footer {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .form-footer-text {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .tos-text {
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 1.25rem;
+    }
+
+    .tos-text a {
+      color: var(--gold-dark);
+      text-decoration: none;
+    }
+
+    .tos-text a:hover { text-decoration: underline; }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .panel-left { display: none; }
+      .page-wrapper { max-width: 440px; border-radius: 16px; }
+      .panel-right { padding: 2.5rem 1.75rem; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="heading">Food Book</div>
-        <form class="form" id="registrationForm">
-          <input required class="input" type="text" name="name" id="name" placeholder="Full Name">
-          <input required class="input" type="text" name="city" id="city" placeholder="City">
-          <input required class="input" type="email" name="email" id="email" placeholder="E-mail">
-          <input required class="input" type="password" name="password" id="password" placeholder="Password">
-          <input required class="input" type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password">
-          <span id="password-error" style="color: red; font-size: 12px; display: none;">Passwords do not match!</span>
-          <span id="general-error" style="color: red; font-size: 12px; display: none;"></span>
-          <span id="success-message" style="color: green; font-size: 12px; display: none;"></span>
-          <input class="login-button" type="submit" value="Register" id="submitBtn">
-        </form>
+  <div class="page-wrapper">
 
-        <span class="agreement"><a href="#">Learn user licence agreement</a></span>
-
-        <!-- 👇 Added section for login -->
-        <div class="login-redirect" style="margin-top: 15px; font-size: 14px;">
-            Already have an account? 
-            <a href="/login" style="color: blue; text-decoration: underline;">Login here</a>
+    <!-- LEFT PANEL -->
+    <div class="panel-left">
+      <div class="brand">
+        <div class="brand-logo">
+          <div class="brand-icon">
+            <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="8" width="6" height="8" rx="1" fill="#C9A96E"/>
+              <rect x="10" y="4" width="6" height="12" rx="1" fill="#C9A96E" opacity="0.6"/>
+              <rect x="5" y="2" width="8" height="5" rx="1" fill="#C9A96E" opacity="0.35"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name">Block Property</div>
+            <div class="brand-tagline">Powered by AI</div>
+          </div>
         </div>
+      </div>
+
+      <div class="panel-headline">
+        <h1>Find your next<br><em>property</em> with<br>intelligence.</h1>
+        <p>AI-powered marketplace for real estate — discover, verify, and transact with confidence on the blockchain.</p>
+      </div>
+
+
     </div>
 
-    <script>
-        const form = document.getElementById('registrationForm');
-        const password = document.getElementById('password');
-        const confirmPassword = document.getElementById('confirm-password');
-        const passwordError = document.getElementById('password-error');
-        const generalError = document.getElementById('general-error');
-        const successMessage = document.getElementById('success-message');
-        const submitBtn = document.getElementById('submitBtn');
+    <!-- RIGHT PANEL -->
+    <div class="panel-right">
+      <div class="form-header">
+        <h2>Create account</h2>
+        <p>Already registered? <a href="/login">Sign in instead →</a></p>
+      </div>
 
-        function validatePassword() {
-            if (password.value !== confirmPassword.value && confirmPassword.value !== '') {
-                passwordError.style.display = 'block';
-                confirmPassword.style.borderColor = 'red';
-                return false;
-            } else {
-                passwordError.style.display = 'none';
-                confirmPassword.style.borderColor = '';
-                return true;
-            }
+      <div class="general-error" id="general-error"></div>
+      <div class="success-msg" id="success-message"></div>
+
+      <form id="registrationForm" novalidate>
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Raghav Sharma" required>
+        </div>
+
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" placeholder="Mumbai" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@email.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Min. 6 characters" required>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" placeholder="Repeat password" required>
+        </div>
+
+        <div class="error-text" id="password-error">Passwords do not match.</div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Create Account</button>
+
+      </form>
+
+      <div class="form-footer">
+        <div class="divider-line"></div>
+        <span class="form-footer-text">Secure &amp; Encrypted</span>
+        <div class="divider-line"></div>
+      </div>
+
+      <p class="tos-text">By registering you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+
+  </div>
+
+  <script>
+    const form = document.getElementById('registrationForm');
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirm-password');
+    const passwordError = document.getElementById('password-error');
+    const generalError = document.getElementById('general-error');
+    const successMessage = document.getElementById('success-message');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function validatePassword() {
+      if (confirmPassword.value !== '' && password.value !== confirmPassword.value) {
+        passwordError.style.display = 'block';
+        confirmPassword.classList.add('error-field');
+        return false;
+      }
+      passwordError.style.display = 'none';
+      confirmPassword.classList.remove('error-field');
+      return true;
+    }
+
+    password.addEventListener('input', validatePassword);
+    confirmPassword.addEventListener('input', validatePassword);
+
+    form.querySelectorAll('input').forEach(input => {
+      input.addEventListener('input', () => {
+        generalError.style.display = 'none';
+      });
+    });
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      generalError.style.display = 'none';
+      successMessage.style.display = 'none';
+
+      if (!validatePassword()) {
+        confirmPassword.focus();
+        return;
+      }
+
+      const formData = {
+        Name: document.getElementById('name').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: password.value
+      };
+
+      if (!formData.Name || !formData.city || !formData.email || !formData.password) {
+        generalError.textContent = 'Please fill in all fields.';
+        generalError.style.display = 'block';
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        generalError.textContent = 'Please enter a valid email address.';
+        generalError.style.display = 'block';
+        return;
+      }
+
+      if (formData.password.length < 6) {
+        generalError.textContent = 'Password must be at least 6 characters.';
+        generalError.style.display = 'block';
+        return;
+      }
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating account…';
+
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          successMessage.textContent = 'Account created! Redirecting…';
+          successMessage.style.display = 'block';
+          localStorage.setItem('registered', 'true');
+          if (data.token) localStorage.setItem('authToken', data.token);
+          if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+          setTimeout(() => { window.location.href = '/login'; }, 1200);
+          form.reset();
+        } else {
+          generalError.textContent = data.message || 'Registration failed. Please try again.';
+          generalError.style.display = 'block';
         }
 
-        password.addEventListener('input', validatePassword);
-        confirmPassword.addEventListener('input', validatePassword);
+      } catch (error) {
+        generalError.textContent = 'Network error. Check your connection and try again.';
+        generalError.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
+    });
+  </script>
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            generalError.style.display = 'none';
-            successMessage.style.display = 'none';
-
-            if (!validatePassword()) {
-                passwordError.style.display = 'block';
-                confirmPassword.style.borderColor = 'red';
-                confirmPassword.focus();
-                return;
-            }
-
-            const formData = {
-                Name: document.getElementById('name').value.trim(),
-                city: document.getElementById('city').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                password: password.value
-            };
-
-            if (!formData.Name || !formData.city || !formData.email || !formData.password) {
-                generalError.textContent = 'Please fill in all fields';
-                generalError.style.display = 'block';
-                return;
-            }
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(formData.email)) {
-                generalError.textContent = 'Please enter a valid email address';
-                generalError.style.display = 'block';
-                return;
-            }
-
-            if (formData.password.length < 6) {
-                generalError.textContent = 'Password must be at least 6 characters long';
-                generalError.style.display = 'block';
-                return;
-            }
-
-            try {
-                submitBtn.disabled = true;
-                submitBtn.value = 'Registering...';
-
-                const response = await fetch('/signup', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    successMessage.textContent = 'Registration successful!';
-                    successMessage.style.display = 'block';
-                    localStorage.setItem('registered', 'true');
-    
-                    if (data.token) localStorage.setItem('authToken', data.token);
-                    if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
-
-                    setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 1000);
-
-                    form.reset();
-                } else {
-                    generalError.textContent = data.message || 'Registration failed. Please try again.';
-                    generalError.style.display = 'block';
-                }
-
-            } catch (error) {
-                console.error('Registration error:', error);
-                generalError.textContent = 'Network error. Please check your connection and try again.';
-                generalError.style.display = 'block';
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.value = 'Register';
-            }
-        });
-
-        form.querySelectorAll('.input').forEach(input => {
-            input.addEventListener('input', () => {
-                generalError.style.display = 'none';
-            });
-        });
-    </script>
+</body>
+</html>
 </body>
 </html>

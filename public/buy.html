@@ -4,115 +4,167 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Buy Properties</title>
-  
-  <!-- Add ethers.js for blockchain interaction -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold: #C9A96E;
+      --gold-light: #E8D5B0;
+      --gold-dark: #A07840;
+      --bg: #0B0C0E;
+      --surface: #111318;
+      --surface2: #181B22;
+      --border: rgba(201,169,110,0.15);
+      --border-hover: rgba(201,169,110,0.35);
+      --text: #F0EDE8;
+      --muted: #888580;
+      --danger: #E05C5C;
+      --success: #4CAF82;
+    }
+
     body {
       margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: #f4f7fb;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     nav {
-      background-color: #1a1a1a;
-      color: white;
-      padding: 15px 30px;
+      background: rgba(17,19,24,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .nav-logo {
-      font-size: 22px;
-      font-weight: bold;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .nav-logo span { color: var(--gold); }
+
+    #userDisplay {
+      font-size: 13px;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
+    }
+
+    .network-warning {
+      background: rgba(201,169,110,0.08);
+      border: 1px solid rgba(201,169,110,0.3);
+      color: var(--gold);
+      padding: 14px 20px;
+      text-align: center;
+      margin: 1.5rem 2rem 0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
     }
 
     .property-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      padding: 40px 20px;
-      gap: 25px;
+      padding: 2.5rem 1.5rem;
+      gap: 1.5rem;
     }
 
     .property-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
       width: 260px;
-      padding: 15px;
-      text-align: center;
+      overflow: hidden;
       transition: all 0.3s ease;
     }
 
     .property-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+      transform: translateY(-6px);
+      border-color: var(--border-hover);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.3);
     }
 
     .property-card img {
       width: 100%;
       height: 170px;
-      border-radius: 10px;
       object-fit: cover;
+      border-bottom: 1px solid var(--border);
+      opacity: 0.85;
     }
 
     .property-card h3 {
-      margin: 10px 0 5px;
-      font-size: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--text);
+      margin: 14px 14px 6px;
     }
 
     .property-card p {
-      color: #555;
-      margin: 3px 0;
+      color: var(--muted);
+      font-size: 13px;
+      margin: 3px 14px;
+    }
+
+    .property-card p:nth-child(4) {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px;
+      color: var(--gold);
     }
 
     .buy-btn {
-      margin-top: 10px;
-      background-color: #4CAF50;
-      color: white;
+      display: block;
+      width: calc(100% - 28px);
+      margin: 14px;
+      background: var(--gold);
+      color: #0B0C0E;
       border: none;
       padding: 10px 16px;
-      border-radius: 8px;
+      border-radius: 9px;
       cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s ease;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      transition: background 0.2s, transform 0.15s;
     }
 
-    .buy-btn:hover {
-      background-color: #45a049;
-    }
+    .buy-btn:hover { background: var(--gold-light); }
+    .buy-btn:active { transform: scale(0.98); }
 
     .buy-btn:disabled {
-      background-color: #ccc;
+      background: var(--surface2);
+      color: var(--muted);
       cursor: not-allowed;
+      border: 1px solid var(--border);
     }
 
     .empty-msg {
       text-align: center;
-      margin-top: 50px;
-      font-size: 20px;
-      color: #777;
-    }
-
-    .network-warning {
-      background: #fff3cd;
-      border: 1px solid #ffc107;
-      color: #856404;
-      padding: 15px;
-      text-align: center;
-      margin: 20px;
-      border-radius: 8px;
-      font-weight: 600;
+      margin-top: 4rem;
+      font-size: 16px;
+      color: var(--muted);
     }
   </style>
 </head>
 <body>
 
   <nav>
-    <div class="nav-logo">🏡 Property Marketplace</div>
+    <div class="nav-logo">🏡 <span>Block</span>Property</div>
     <div id="userDisplay"></div>
   </nav>
 
@@ -123,7 +175,7 @@
   <script>
     // ==================== SEPOLIA SMART CONTRACT CONFIGURATION ====================
     const SEPOLIA_CHAIN_ID = '0xaa36a7'; // 11155111 in decimal
-    const CONTRACT_ADDRESS = '0x4a72c52bad1d4ecbae77887022c79a51629fe489';
+    const CONTRACT_ADDRESS = '0x6aA426B160Ebb2a52a1F32d19341480192D5d7d7';
     
     const CONTRACT_ABI = [
       {
@@ -339,7 +391,6 @@
         `;
         document.getElementById('networkWarning').style.display = 'block';
         
-        // Try to switch network automatically
         try {
           await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
@@ -371,10 +422,8 @@
 
       userDisplay.textContent = `👤 ${userEmail} | 💳 ${walletAddress.slice(0,6)}...${walletAddress.slice(-4)}`;
 
-      // Check network on load
       await checkNetwork();
 
-      // Listen for network changes
       if (window.ethereum) {
         window.ethereum.on('chainChanged', () => {
           window.location.reload();
@@ -394,15 +443,15 @@
           const card = document.createElement("div");
           card.classList.add("property-card");
           card.innerHTML = `
-            <img src="${p.image || './pictures/default.png'}" alt="${p.Name}">
+            <img src="https://res.cloudinary.com/dys5oojz9/image/upload/v1744403976/uploads/1000116213.jpg" alt="${p.Name}">
             <h3>${p.Name}</h3>
             <p>📍 ${p.city}</p>
             <p>💰 Price: ₹${p.price}</p>
             <p>Ξ ${p.priceInETH} ETH</p>
-            <p style="font-size: 11px; color: #666;">Property ID: ${index + 1}</p>
+            <p style="font-size: 11px; color: #666;">Property ID: ${p.blockchainPropertyId || index + 1}</p>
             <button class="buy-btn" 
                     data-id="${p._id}" 
-                    data-property-id="${index + 1}"
+                    data-property-id="${p.blockchainPropertyId || index + 1}"
                     data-eth="${p.priceInETH}">
               Buy Now
             </button>
@@ -418,14 +467,12 @@
             const priceInETH = e.target.getAttribute("data-eth");
             const button = e.target;
 
-            // Check if MetaMask is available
             if (!window.ethereum) {
               alert("❌ MetaMask not detected! Please install MetaMask extension.");
               window.open("https://metamask.io/download/", "_blank");
               return;
             }
 
-            // Check network
             const isCorrectNetwork = await checkNetwork();
             if (!isCorrectNetwork) {
               alert("⚠️ Please switch to Sepolia Test Network in MetaMask!");
@@ -446,7 +493,6 @@
               button.disabled = true;
               button.textContent = 'Processing...';
 
-              // Initialize ethers.js provider
               const provider = new ethers.providers.Web3Provider(window.ethereum);
               await provider.send("eth_requestAccounts", []);
               const signer = provider.getSigner();
@@ -456,31 +502,26 @@
               console.log('Property ID:', blockchainPropertyId);
               console.log('Price:', priceInETH, 'ETH');
 
-              // Create contract instance
               const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
 
-              // Convert ETH to Wei
               const priceInWei = ethers.utils.parseEther(priceInETH);
               console.log('Price in Wei:', priceInWei.toString());
 
               button.textContent = 'Confirm in MetaMask...';
 
-              // Call buyProperty function on smart contract
               const tx = await contract.buyProperty(blockchainPropertyId, {
                 value: priceInWei,
-                gasLimit: 300000 // Set gas limit
+                gasLimit: 300000
               });
 
               button.textContent = 'Waiting for confirmation...';
               alert(`📤 Transaction sent!\n\nHash: ${tx.hash}\n\nWaiting for confirmation...`);
 
-              // Wait for transaction confirmation
               const receipt = await tx.wait();
               console.log('Transaction confirmed:', receipt);
 
               button.textContent = 'Updating database...';
 
-              // Update database after blockchain confirmation
               const dbRes = await fetch(`/buy/${dbPropertyId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -506,9 +547,7 @@
                   `https://sepolia.etherscan.io/tx/${receipt.transactionHash}`
                 );
                 
-                // Open Etherscan in new tab
                 window.open(`https://sepolia.etherscan.io/tx/${receipt.transactionHash}`, '_blank');
-                
                 setTimeout(() => location.reload(), 2000);
               } else {
                 alert("⚠️ Blockchain transaction succeeded but database update failed: " + result.message);

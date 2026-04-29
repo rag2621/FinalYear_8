@@ -25,9 +25,17 @@ const PropertySchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+
+    amenities: [
+      {
+        type: String,
+        enum: ["school", "hospital", "peaceful", "luxury", "metro", "mall"],
+      },
+    ],
+
     owner: {
       type: String,
-      required: true, // Wallet address of current owner (0x742d…)
+      required: true,
     },
     email: {
       type: String,
@@ -35,8 +43,25 @@ const PropertySchema = new mongoose.Schema(
     },
     blockchainTx: {
       type: String,
-      required: true, // Transaction hash from blockchain
+      required: true,
     },
+
+    // ✅ NEW: Blockchain property ID
+    blockchainPropertyId: {
+      type: String,
+      default: null,
+    },
+
+    contractAddress: {
+      type: String,
+      default: null,
+    },
+
+    network: {
+      type: String,
+      default: null,
+    },
+
     isSold: {
       type: Boolean,
       default: false,
@@ -51,13 +76,12 @@ const PropertySchema = new mongoose.Schema(
     },
     previousOwner: {
       type: String,
-      default: null, // Stores previous owner when property is sold
+      default: null,
     },
   },
   {
-    timestamps: true, // Adds createdAt & updatedAt
+    timestamps: true,
   }
 );
-
 export const User = mongoose.model("regis", UserSchema);
 export const Property = mongoose.model("Propertiesbc", PropertySchema);
